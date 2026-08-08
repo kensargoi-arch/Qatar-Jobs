@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Application Dashboard - FindAJob.qa</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background: #f8f9fa; color: #333; line-height: 1.6; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+
+        /* Header */
+        header { background: linear-gradient(to right, #8a1538 0%, #8a1538 55%, white 55%, white 100%); color: white; padding: 20px 0; box-shadow: 0 4px 12px rgba(0,0,0,.1); }
+        .header-content { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px; }
+        .logo-section { display: flex; align-items: center; gap: 12px; }
+        .logo-icon { font-size: 2.4rem; color: #ffcc00; }
+        .site-title h1 { font-family: 'Montserrat', sans-serif; font-size: 1.7rem; font-weight: 800; color: white; }
+        .qa-domain { color: #ffcc00; }
+        .nav-links { display: flex; gap: 15px; flex-wrap: wrap; }
+        .nav-links a { color: white; text-decoration: none; font-weight: 600; padding: 7px 14px; border-radius: 4px; transition: background .3s; font-size: .93rem; }
+        .nav-links a:hover { background: rgba(255,255,255,.2); }
+
+        /* Main */
+        main { padding: 35px 0 70px; }
+        .back-btn { display: inline-flex; align-items: center; gap: 8px; background: #8a1538; color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: 600; margin-bottom: 28px; transition: background .3s; font-size: .93rem; }
+        .back-btn:hover { background: #7a1332; }
+
+        /* Dashboard Header */
+        .dash-header { background: linear-gradient(135deg, #8a1538, #a51e44); color: white; border-radius: 16px; padding: 38px 40px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(138,21,56,.25); }
+        .dash-header h1 { font-family: 'Montserrat', sans-serif; font-size: 2.2rem; margin-bottom: 8px; }
+        .dash-header p { opacity: .9; font-size: 1rem; max-width: 600px; }
+        .app-ref-box { display: inline-flex; align-items: center; gap: 10px; background: rgba(255,255,255,.15); border: 2px solid rgba(255,255,255,.35); padding: 10px 18px; border-radius: 8px; margin-top: 18px; font-size: .95rem; }
+        .app-ref-box strong { font-size: 1.1rem; color: #ffcc00; letter-spacing: 1px; }
+
+        /* Status Cards */
+        .status-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 30px; }
+        .status-card { background: white; border-radius: 12px; padding: 22px 18px; box-shadow: 0 6px 18px rgba(0,0,0,.08); border: 2px solid #e1e5eb; text-align: center; transition: transform .2s; cursor: default; }
+        .status-card:hover { transform: translateY(-4px); }
+        .status-card .s-icon { font-size: 2.2rem; margin-bottom: 10px; }
+        .status-card .s-label { font-size: .85rem; font-weight: 600; color: #555; margin-bottom: 6px; }
+        .status-badge { display: inline-block; padding: 5px 14px; border-radius: 20px; font-size: .8rem; font-weight: 700; }
+        .badge-pending { background: #fff8e1; color: #b38600; border: 1px solid #ffe082; }
+        .badge-review { background: #e3f2fd; color: #1565c0; border: 1px solid #bbdefb; }
+        .badge-selected { background: #e7f4e9; color: #2e7d32; border: 1px solid #c8e6c9; }
+        .badge-rejected { background: #ffebee; color: #c62828; border: 1px solid #ffcdd2; }
+        .badge-processing { background: #f3e5f5; color: #6a1b9a; border: 1px solid #e1bee7; }
+        .badge-approved { background: #e7f4e9; color: #2e7d32; border: 1px solid #a5d6a7; }
+        .badge-travel { background: #fff3e0; color: #e65100; border: 1px solid #ffcc80; }
+
+        /* Progress Timeline */
+        .timeline-section { background: white; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,.08); padding: 35px; margin-bottom: 28px; border: 2px solid #e1e5eb; }
+        .timeline-section h2 { font-family: 'Montserrat', sans-serif; font-size: 1.5rem; color: #0d4a8a; margin-bottom: 28px; display: flex; align-items: center; gap: 10px; }
+        .timeline { position: relative; }
+        .timeline::before { content: ''; position: absolute; left: 28px; top: 0; bottom: 0; width: 3px; background: #e1e5eb; }
+        .tl-item { display: flex; gap: 20px; margin-bottom: 28px; position: relative; }
+        .tl-item:last-child { margin-bottom: 0; }
+        .tl-dot { width: 58px; height: 58px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; z-index: 1; border: 3px solid white; box-shadow: 0 4px 12px rgba(0,0,0,.15); }
+        .tl-dot.done { background: linear-gradient(135deg, #2e7d32, #43a047); color: white; }
+        .tl-dot.active { background: linear-gradient(135deg, #8a1538, #a51e44); color: white; }
+        .tl-dot.upcoming { background: #eee; color: #aaa; }
+        .tl-content { flex: 1; padding-top: 8px; }
+        .tl-title { font-weight: 700; font-size: 1rem; color: #222; margin-bottom: 4px; }
+        .tl-title.active { color: #8a1538; }
+        .tl-title.done { color: #2e7d32; }
+        .tl-desc { font-size: .88rem; color: #666; line-height: 1.5; }
+        .tl-date { font-size: .8rem; color: #999; margin-top: 5px; font-style: italic; }
+        .tl-badge { display: inline-block; font-size: .75rem; font-weight: 700; padding: 3px 10px; border-radius: 12px; margin-left: 8px; }
+        .tl-badge.done { background: #e7f4e9; color: #2e7d32; }
+        .tl-badge.active { background: #fff0f3; color: #8a1538; border: 1px solid #f5c0cc; }
+        .tl-badge.upcoming { background: #f0f0f0; color: #888; }
+
+        /* Checklist panel */
+        .checklist-panel { background: white; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,.08); padding: 30px; margin-bottom: 28px; border: 2px solid #e1e5eb; }
+        .checklist-panel h2 { font-family: 'Montserrat', sans-serif; font-size: 1.4rem; color: #0d4a8a; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+        .doc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
+        .doc-item { display: flex; align-items: center; gap: 12px; padding: 13px 16px; border-radius: 10px; border: 2px solid #e1e5eb; background: #f8fafc; font-size: .9rem; }
+        .doc-item i.di { font-size: 1.1rem; flex-shrink: 0; }
+        .doc-item.uploaded { border-color: #a5d6a7; background: #f1f8f2; }
+        .doc-item.uploaded i.di { color: #2e7d32; }
+        .doc-item.missing { border-color: #ffcc80; background: #fff8f0; }
+        .doc-item.missing i.di { color: #e65100; }
+        .doc-item .doc-name { flex: 1; font-weight: 600; color: #333; }
+        .doc-item .doc-status { font-size: .78rem; font-weight: 700; }
+        .doc-item.uploaded .doc-status { color: #2e7d32; }
+        .doc-item.missing .doc-status { color: #e65100; }
+
+        /* Info panels */
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-bottom: 28px; }
+        .info-card { background: white; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,.08); padding: 28px; border: 2px solid #e1e5eb; }
+        .info-card h3 { font-family: 'Montserrat', sans-serif; font-size: 1.15rem; color: #0d4a8a; margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
+        .info-row { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid #f0f0f0; font-size: .9rem; }
+        .info-row:last-child { border-bottom: none; }
+        .info-label { color: #777; }
+        .info-value { font-weight: 600; color: #333; }
+
+        /* Visa requirements */
+        .visa-box { background: linear-gradient(135deg, #f0f7ff, #e8f4ff); border-radius: 15px; padding: 28px; margin-bottom: 28px; border: 2px solid #d1e3ff; }
+        .visa-box h2 { font-family: 'Montserrat', sans-serif; color: #0d4a8a; margin-bottom: 16px; font-size: 1.3rem; display: flex; align-items: center; gap: 10px; }
+        .visa-req-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px; }
+        .visa-req-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 14px; background: white; border-radius: 8px; font-size: .88rem; color: #444; box-shadow: 0 2px 6px rgba(0,0,0,.06); }
+        .visa-req-item i { color: #0d4a8a; flex-shrink: 0; margin-top: 2px; }
+        .visa-note-box { margin-top: 14px; padding: 12px 16px; background: #fff8e1; border: 2px solid #ffe082; border-radius: 10px; color: #6b5200; font-size: .88rem; display: flex; gap: 10px; }
+        .visa-note-box i { color: #b38600; flex-shrink: 0; margin-top: 2px; }
+
+        /* CTA */
+        .cta-row { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 28px; }
+        .cta-btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 24px; border-radius: 8px; font-weight: 700; font-size: .95rem; text-decoration: none; transition: all .3s; cursor: pointer; border: none; font-family: 'Poppins', sans-serif; }
+        .cta-primary { background: linear-gradient(to right, #8a1538, #a51e44); color: white; }
+        .cta-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(138,21,56,.3); }
+        .cta-whatsapp { background: #25D366; color: white; }
+        .cta-whatsapp:hover { background: #1ebe57; transform: translateY(-3px); box-shadow: 0 8px 20px rgba(37,211,102,.3); }
+        .cta-blue { background: linear-gradient(to right, #0d4a8a, #1a6fc4); color: white; }
+        .cta-blue:hover { background: linear-gradient(to right, #0a3a6e, #0d4a8a); transform: translateY(-3px); box-shadow: 0 8px 20px rgba(13,74,138,.3); }
+
+        /* Applicant support chat */
+        .chat-section { background: #fff; border: 2px solid #e1e5eb; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,.08); overflow: hidden; margin-bottom: 28px; }
+        .chat-heading { padding: 22px 28px; background: linear-gradient(135deg,#0d4a8a,#1a6fc4); color: #fff; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+        .chat-heading h2 { font-family:'Montserrat',sans-serif; font-size:1.35rem; display:flex; align-items:center; gap:10px; }
+        .chat-heading p { font-size:.82rem; opacity:.88; margin-top:4px; }
+        .encryption-note { font-size:.76rem; color:#dbeafe; display:flex; align-items:center; gap:6px; }
+        .employer-strip { display:flex; gap:12px; padding:16px 20px; border-bottom:1px solid #edf0f3; overflow-x:auto; }
+        .employer-chip { min-width:150px; display:flex; align-items:center; gap:9px; padding:9px 11px; border:1px solid #e1e5eb; border-radius:12px; background:#fbfcfe; }
+        .employer-chip img,.employer-avatar { width:38px; height:38px; border-radius:50%; object-fit:cover; flex-shrink:0; }
+        .employer-avatar { display:flex; align-items:center; justify-content:center; color:#fff; background:#8a1538; }
+        .employer-chip strong { display:block; font-size:.78rem; color:#0d4a8a; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:115px; }
+        .employer-chip small { color:#64748b; font-size:.69rem; display:flex; align-items:center; gap:4px; }
+        .presence-dot { width:7px; height:7px; border-radius:50%; background:#94a3b8; display:inline-block; }
+        .presence-dot.online { background:#22c55e; box-shadow:0 0 0 3px #dcfce7; }
+        .chat-body { background:#f5f8fc; padding:18px 20px; }
+        .chat-messages { height:360px; overflow-y:auto; display:flex; flex-direction:column; gap:11px; padding:4px 4px 12px; }
+        .chat-empty { text-align:center; color:#64748b; padding:55px 20px; font-size:.86rem; }
+        .bubble-row { display:flex; gap:8px; align-items:flex-end; }
+        .bubble-row.mine { justify-content:flex-end; }
+        .chat-bubble { max-width:min(78%,560px); padding:10px 13px; border-radius:14px 14px 14px 4px; background:#fff; box-shadow:0 2px 7px rgba(15,23,42,.08); color:#334155; font-size:.88rem; white-space:pre-wrap; word-break:break-word; }
+        .bubble-row.mine .chat-bubble { background:#0d4a8a; color:#fff; border-radius:14px 14px 4px 14px; }
+        .chat-meta { font-size:.68rem; color:#94a3b8; margin-top:4px; display:flex; gap:8px; align-items:center; }
+        .bubble-row.mine .chat-meta { color:#dbeafe; justify-content:flex-end; }
+        .chat-link { display:block; margin-top:7px; padding:8px 9px; border-left:3px solid #ffcc00; background:rgba(255,255,255,.7); color:#0d4a8a; text-decoration:none; border-radius:6px; font-size:.78rem; }
+        .bubble-row.mine .chat-link { background:rgba(255,255,255,.12); color:#fff; }
+        .chat-attachment { display:inline-flex; align-items:center; gap:6px; margin-top:7px; color:inherit; font-size:.78rem; text-decoration:underline; }
+        .typing-row { display:none; align-items:center; gap:7px; color:#64748b; font-size:.76rem; padding:0 8px 9px; }
+        .typing-row.show { display:flex; }
+        .typing-dots { display:inline-flex; gap:3px; }
+        .typing-dots i { width:5px; height:5px; border-radius:50%; background:#8a1538; animation:bounceDot 1.1s infinite; }
+        .typing-dots i:nth-child(2){animation-delay:.15s}.typing-dots i:nth-child(3){animation-delay:.3s}
+        @keyframes bounceDot { 0%,60%,100%{transform:translateY(0);opacity:.45}30%{transform:translateY(-4px);opacity:1} }
+        .faq-row { display:flex; gap:7px; flex-wrap:wrap; padding:8px 0 13px; }
+        .faq-btn { background:#fff; color:#0d4a8a; border:1px solid #bfdbfe; border-radius:18px; padding:7px 11px; cursor:pointer; font:600 .75rem 'Poppins',sans-serif; }
+        .faq-btn:hover { background:#eaf3ff; }
+        .chat-composer { display:grid; grid-template-columns:1fr auto; gap:8px; }
+        .chat-composer textarea,.chat-composer input { width:100%; border:1px solid #d7dee8; border-radius:9px; padding:10px 12px; font: .84rem 'Poppins',sans-serif; background:#fff; }
+        .chat-composer textarea { min-height:45px; resize:vertical; grid-column:1/-1; }
+        .chat-tools { display:flex; align-items:center; gap:8px; grid-column:1/-1; flex-wrap:wrap; }
+        .chat-tools label { cursor:pointer; color:#0d4a8a; font-size:.78rem; font-weight:600; }
+        .chat-tools input[type=file] { display:none; }
+        .chat-tools .file-name { color:#64748b; font-size:.73rem; }
+        .chat-send { background:#8a1538; color:#fff; border:0; border-radius:9px; padding:10px 18px; font:700 .84rem 'Poppins',sans-serif; cursor:pointer; }
+        .chat-send:disabled { opacity:.6; cursor:wait; }
+        .chat-helper { color:#64748b; font-size:.73rem; margin-top:8px; }
+
+        /* Footer */
+        footer { background: linear-gradient(to right, #0d1b2a, #1a2c42); color: white; padding: 40px 0 20px; margin-top: 60px; }
+        .footer-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 35px; margin-bottom: 28px; }
+        .footer-column h3 { font-family: 'Montserrat', sans-serif; font-size: 1.1rem; margin-bottom: 16px; color: #ffcc00; }
+        .footer-links { list-style: none; }
+        .footer-links li { margin-bottom: 9px; }
+        .footer-links a { color: #ddd; text-decoration: none; transition: color .3s; font-size: .9rem; }
+        .footer-links a:hover { color: #ffcc00; }
+        .copyright { text-align: center; padding-top: 18px; border-top: 1px solid #2a3c50; color: #aaa; font-size: .85rem; }
+
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .nav-links { justify-content: center; }
+            .dash-header { padding: 28px 22px; }
+            .dash-header h1 { font-size: 1.8rem; }
+            .timeline::before { left: 24px; }
+            .tl-dot { width: 50px; height: 50px; font-size: 1.1rem; }
+            .info-grid { grid-template-columns: 1fr; }
+            .cta-row { flex-direction: column; }
+            .chat-body { padding: 13px; }
+            .chat-messages { height: 330px; }
+            .chat-bubble { max-width: 88%; }
+            .chat-composer { grid-template-columns: 1fr; }
+            .chat-send { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo-icon"><i class="fas fa-tasks"></i></div>
+                    <div class="site-title">
+                        <h1>Dashboard — FindAJob<span class="qa-domain">.qa</span></h1>
+                    </div>
+                </div>
+                <div class="nav-links">
+                    <a href="index.html"><i class="fas fa-home"></i> Home</a>
+                    <a href="index.html#search-container">Search Jobs</a>
+                    <a href="apply.html"><i class="fas fa-file-signature"></i> Apply</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <a href="index.html" class="back-btn">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </a>
+
+            <!-- Tracking Lookup -->
+            <div id="lookupSection" style="background:#fff;border-radius:14px;box-shadow:0 8px 25px rgba(0,0,0,.08);padding:28px 32px;margin-bottom:24px;border:2px solid #e1e5eb;">
+                <h3 style="font-family:'Montserrat',sans-serif;color:#0d4a8a;margin-bottom:6px;font-size:1.2rem;"><i class="fas fa-search" style="color:#8a1538;"></i> Track Your Application</h3>
+                <p style="color:#666;font-size:.93rem;margin-bottom:18px;">Enter your tracking reference number (e.g. <code style="background:#f0f2f5;padding:2px 7px;border-radius:4px;color:#8a1538;">FJQ-2026-XXXXXXXX</code>) to see your live application status.</p>
+                <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
+                    <input id="trackInput" type="text" placeholder="FJQ-2026-XXXXXXXX" style="flex:1;min-width:220px;padding:13px 16px;border:2px solid #dde1e7;border-radius:8px;font-family:'Poppins',sans-serif;font-size:1rem;background:#f8fafc;text-transform:uppercase;" oninput="this.value=this.value.toUpperCase()">
+                    <button id="trackBtn" style="padding:13px 26px;background:linear-gradient(to right,#8a1538,#a51e44);color:#fff;border:none;border-radius:8px;font-family:'Poppins',sans-serif;font-weight:700;font-size:.95rem;cursor:pointer;white-space:nowrap;"><i class="fas fa-search"></i> Track Application</button>
+                </div>
+                <div id="lookupError" style="display:none;margin-top:12px;padding:11px 16px;background:#fee2e2;color:#991b1b;border-radius:8px;font-size:.88rem;border:1px solid #fca5a5;"></div>
+                <p style="margin-top:14px;font-size:.85rem;color:#888;"><i class="fas fa-envelope" style="color:#8a1538;"></i> Don't have your reference? Check the email you provided when applying, or <a href="contact.html" style="color:#8a1538;font-weight:600;">contact us</a>.</p>
+            </div>
+
+            <!-- Dashboard Header -->
+            <div class="dash-header">
+                <h1><i class="fas fa-chart-line" style="color:#ffcc00;"></i> My Application Dashboard</h1>
+                <p>Track your job application status, documents, and visa progress — all in one place.</p>
+                <div class="app-ref-box">
+                    <i class="fas fa-id-badge"></i>
+                    Application Reference: <strong id="displayAppRef">—</strong>
+                    <span id="noRef" style="opacity:.7; font-size:.85rem;">(Submit an application to get your reference number)</span>
+                </div>
+            </div>
+
+            <!-- Quick Status Cards -->
+            <div class="status-grid">
+                <div class="status-card">
+                    <div class="s-icon"><i class="fas fa-paper-plane" style="color:#8a1538;"></i></div>
+                    <div class="s-label">Application</div>
+                    <span class="status-badge badge-pending" id="card-application">Pending Review</span>
+                </div>
+                <div class="status-card">
+                    <div class="s-icon"><i class="fas fa-folder-open" style="color:#1565c0;"></i></div>
+                    <div class="s-label">Documents</div>
+                    <span class="status-badge badge-review" id="card-documents">Under Review</span>
+                </div>
+                <div class="status-card">
+                    <div class="s-icon"><i class="fas fa-user-tie" style="color:#6a1b9a;"></i></div>
+                    <div class="s-label">Employer Review</div>
+                    <span class="status-badge badge-pending" id="card-employer">Pending</span>
+                </div>
+                <div class="status-card">
+                    <div class="s-icon"><i class="fas fa-calendar-check" style="color:#0d4a8a;"></i></div>
+                    <div class="s-label">Interview</div>
+                    <span class="status-badge badge-pending" id="card-interview">Not Scheduled</span>
+                </div>
+                <div class="status-card">
+                    <div class="s-icon"><i class="fas fa-handshake" style="color:#2e7d32;"></i></div>
+                    <div class="s-label">Job Offer</div>
+                    <span class="status-badge badge-pending" id="card-offer">Awaiting</span>
+                </div>
+                <div class="status-card">
+                    <div class="s-icon"><i class="fas fa-passport" style="color:#e65100;"></i></div>
+                    <div class="s-label">Visa</div>
+                    <span class="status-badge badge-pending" id="card-visa">Not Started</span>
+                </div>
+            </div>
+
+            <!-- Applicant support chat -->
+            <section class="chat-section" id="supportChat">
+                <div class="chat-heading">
+                    <div>
+                        <h2><i class="fas fa-comments"></i> Application Support Chat</h2>
+                        <p>Your recruiter will post updates here. Check back in a few minutes or within 24 hours.</p>
+                    </div>
+                    <div class="encryption-note"><i class="fas fa-lock"></i> Encrypted message storage</div>
+                </div>
+                <div class="employer-strip" id="employerStrip">
+                    <div class="employer-chip"><div class="employer-avatar"><i class="fas fa-users"></i></div><div><strong>FindAJob.qa Team</strong><small><span class="presence-dot online"></span> Support online</small></div></div>
+                </div>
+                <div class="chat-body">
+                    <div class="chat-messages" id="chatMessages"><div class="chat-empty"><i class="fas fa-spinner fa-spin"></i> Loading your support chat…</div></div>
+                    <div class="typing-row" id="typingRow"><span id="typingName">Recruiter</span> is typing <span class="typing-dots"><i></i><i></i><i></i></span></div>
+                    <div class="faq-row">
+                        <button type="button" class="faq-btn" data-faq="track">Track my visa application</button>
+                        <button type="button" class="faq-btn" data-faq="documents">Which documents are needed?</button>
+                        <button type="button" class="faq-btn" data-faq="help">How may I get help?</button>
+                    </div>
+                    <form class="chat-composer" id="chatForm">
+                        <textarea id="chatText" placeholder="Write a question to your recruiter…" maxlength="4000"></textarea>
+                        <div class="chat-tools">
+                            <label for="chatFile"><i class="fas fa-paperclip"></i> Attach file</label>
+                            <input id="chatFile" type="file" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" />
+                            <span class="file-name" id="chatFileName"></span>
+                            <input id="chatLink" type="url" placeholder="Optional link to share (https://…)" />
+                        </div>
+                        <button class="chat-send" id="chatSend" type="submit"><i class="fas fa-paper-plane"></i> Send</button>
+                    </form>
+                    <div class="chat-helper"><i class="fas fa-info-circle"></i> Never send passwords, payment details, or money to anyone claiming to offer a job.</div>
+                </div>
+            </section>
+
+            <!-- Application Progress Timeline -->
+            <div class="timeline-section">
+                <h2><i class="fas fa-route" style="color:#8a1538;"></i> Application Progress — 10 Steps to Employment</h2>
+                <div class="timeline">
+
+                    <div class="tl-item">
+                        <div class="tl-dot active"><i class="fas fa-paper-plane"></i></div>
+                        <div class="tl-content">
+                            <div class="tl-title active">Step 1 — Application Submitted <span class="tl-badge active">In Progress</span></div>
+                            <div class="tl-desc">Your application form has been submitted to FindAJob.qa. Our recruitment team will review your details within 1–3 business days.</div>
+                            <div class="tl-date">Awaiting your submission</div>
+                        </div>
+                    </div>
+
+                    <div class="tl-item">
+                        <div class="tl-dot upcoming"><i class="fas fa-folder-open"></i></div>
+                        <div class="tl-content">
+                            <div class="tl-title upcoming">Step 2 — Documents Under Review <span class="tl-badge upcoming">Upcoming</span></div>
+                            <div class="tl-desc">Our team reviews your uploaded passport, CV, certificates, and supporting documents for completeness and accuracy.</div>
+                        </div>
+                    </div>
+
+                    <div class="tl-item">
+                        <div class="tl-dot upcoming"><i class="fas fa-user-tie"></i></div>
+                        <div class="tl-content">
+                            <div class="tl-title upcoming">Step 3 — Employer Review <span class="tl-badge upcoming">Upcoming</span></div>
+                            <div class="tl-desc">Your profile is shared with the employer or sponsoring company. They review your qualifications and experience for the role.</div>
+                        </div>
+                    </div>
+
+                    <div class="tl-item">
+                        <div class="tl-dot upcoming"><i class="fas fa-calendar-check"></i></div>
+                        <div class="tl-content">
+                            <div class="tl-title upcoming">Step 4 — Interview Scheduled <span class="tl-badge upcoming">Upcoming</span></div>
+                            <div class="tl-desc">If selected by the employer, an interview is arranged — by phone, video call, or in person. You will be notified via WhatsApp and email.</div>
+                        </div>
+                    </div>
+
+                    <div class="tl-item">
+                        <div class="tl-dot upcoming"><i class="fas fa-handshake"></i></div>
+                        <div class="tl-content">
+                            <div class="tl-title upcoming">Step 5 — Job Offer Issued <span class="tl-badge upcoming">Upcoming</span></div>
+                            <div class="tl-desc">Congratulations! A formal job offer and employment contract are issued. Review carefully before signing. The employer covers all visa fees.</div>
+                        </div>
+                    </div>
+
+                    <div class="tl-item">
+                        <div class="tl-dot upcoming"><i class="fas fa-passport"></i></div>
+                        <div class="tl-content">
+                            <div class="tl-title upcoming">Step 6 — Visa Processing <span class="tl-badge upcoming">Upcoming</span></div>
+                            <div class="tl-desc">Your employer / sponsor submits the Qatar work visa application to the Ministry of Interior on your behalf. You may need to provide additional documents at this stage.</div>
+                        </div>
+                    </div>
+
+                    <div class="tl-item">
+                        <div class="tl-dot upcoming"><i class="fas fa-stamp"></i></div>
+                        <div class="tl-content">
+                            <div class="tl-title upcoming">Step 7 — Visa Approved <span class="tl-badge upcoming">Upcoming</span></div>
+                            <div class="tl-desc">Your Qatar work visa is approved. Your entry permit will be shared with you. Ensure your passport has at least 6 months of validity remaining.</div>
+                        </div>
+                    </div>
+
+                    <div class="tl-item">
+                        <div class="tl-dot upcoming"><i class="fas fa-suitcase"></i></div>
+                        <div class="tl-content">
+                            <div class="tl-title upcoming">Step 8 — Flight Preparation <span class="tl-badge upcoming">Upcoming</span></div>
+                            <div class="tl-desc">Your employer or agency arranges your flight to Qatar. Carry original documents: passport, job offer letter, medical certificate, and police clearance.</div>
+                        </div>
+                    </div>
+
+                    <div class="tl-item">
+                        <div class="tl-dot upcoming"><i class="fas fa-plane-arrival"></i></div>
+                        <div class="tl-content">
+                            <div class="tl-title upcoming">Step 9 — Arrival in Qatar <span class="tl-badge upcoming">Upcoming</span></div>
+                            <div class="tl-desc">You arrive in Qatar. Your employer collects you from the airport. You undergo biometric registration and medical checks if not already completed.</div>
+                        </div>
+                    </div>
+
+                    <div class="tl-item">
+                        <div class="tl-dot upcoming"><i class="fas fa-hard-hat"></i></div>
+                        <div class="tl-content">
+                            <div class="tl-title upcoming">Step 10 — Employment Started <span class="tl-badge upcoming">Upcoming</span></div>
+                            <div class="tl-desc">You begin work. Your Qatar ID (Residence Permit) is issued within a few weeks. Welcome to Qatar — your new career starts here!</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Document Checklist -->
+            <div class="checklist-panel">
+                <h2><i class="fas fa-clipboard-list" style="color:#8a1538;"></i> Document Checklist</h2>
+                <div class="doc-grid">
+                    <div class="doc-item uploaded">
+                        <i class="fas fa-check-circle di"></i>
+                        <div>
+                            <div class="doc-name">Passport Copy</div>
+                            <div class="doc-status">Uploaded</div>
+                        </div>
+                    </div>
+                    <div class="doc-item missing">
+                        <i class="fas fa-exclamation-circle di"></i>
+                        <div>
+                            <div class="doc-name">Passport Photo</div>
+                            <div class="doc-status">Required</div>
+                        </div>
+                    </div>
+                    <div class="doc-item uploaded">
+                        <i class="fas fa-check-circle di"></i>
+                        <div>
+                            <div class="doc-name">CV / Resume</div>
+                            <div class="doc-status">Uploaded</div>
+                        </div>
+                    </div>
+                    <div class="doc-item missing">
+                        <i class="fas fa-exclamation-circle di"></i>
+                        <div>
+                            <div class="doc-name">Educational Certificates</div>
+                            <div class="doc-status">Not uploaded</div>
+                        </div>
+                    </div>
+                    <div class="doc-item missing">
+                        <i class="fas fa-exclamation-circle di"></i>
+                        <div>
+                            <div class="doc-name">Experience Letters</div>
+                            <div class="doc-status">Not uploaded</div>
+                        </div>
+                    </div>
+                    <div class="doc-item missing">
+                        <i class="fas fa-exclamation-circle di"></i>
+                        <div>
+                            <div class="doc-name">Police Clearance Certificate</div>
+                            <div class="doc-status">In Progress</div>
+                        </div>
+                    </div>
+                    <div class="doc-item missing">
+                        <i class="fas fa-exclamation-circle di"></i>
+                        <div>
+                            <div class="doc-name">Medical / Fitness Certificate</div>
+                            <div class="doc-status">Not obtained</div>
+                        </div>
+                    </div>
+                    <div class="doc-item missing">
+                        <i class="fas fa-exclamation-circle di"></i>
+                        <div>
+                            <div class="doc-name">Driving Licence Copy</div>
+                            <div class="doc-status">Not uploaded (if applicable)</div>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top:18px; padding:14px 16px; background:#fff8e1; border:2px solid #ffe082; border-radius:10px; color:#6b5200; font-size:.88rem; display:flex; gap:10px;">
+                    <i class="fas fa-info-circle" style="color:#b38600; flex-shrink:0; margin-top:2px;"></i>
+                    <span>Missing documents can be sent directly to us on WhatsApp: <strong>+254 787 524 212</strong>. Upload PDF or clear photo images only. All documents are kept strictly confidential.</span>
+                </div>
+            </div>
+
+            <!-- Info panels -->
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3><i class="fas fa-user" style="color:#8a1538;"></i> Application Details</h3>
+                    <div class="info-row"><span class="info-label">Reference</span><span class="info-value" id="infoRef">—</span></div>
+                    <div class="info-row"><span class="info-label">Position</span><span class="info-value" id="infoPosition">General Application</span></div>
+                    <div class="info-row"><span class="info-label">Submitted</span><span class="info-value" id="infoDate">—</span></div>
+                    <div class="info-row"><span class="info-label">Current Status</span><span class="info-value" style="color:#8a1538;">Pending Review</span></div>
+                    <div class="info-row"><span class="info-label">Recruiter</span><span class="info-value">FindAJob.qa Team</span></div>
+                </div>
+                <div class="info-card">
+                    <h3><i class="fas fa-envelope" style="color:#8a1538;"></i> Contact Your Recruiter</h3>
+                    <div class="info-row"><span class="info-label">WhatsApp</span><span class="info-value">+254 787 524 212</span></div>
+                    <div class="info-row"><span class="info-label">Email</span><span class="info-value">info@findajob.qa</span></div>
+                    <div class="info-row"><span class="info-label">Hours</span><span class="info-value">Sun–Thu 8AM–6PM (AST)</span></div>
+                    <div class="info-row"><span class="info-label">Response Time</span><span class="info-value">Within 24–48 hours</span></div>
+                    <div class="info-row"><span class="info-label">Location</span><span class="info-value">Doha, Qatar</span></div>
+                </div>
+            </div>
+
+            <!-- Visa Requirements -->
+            <div class="visa-box">
+                <h2><i class="fas fa-passport" style="color:#0d4a8a;"></i> Qatar Work Visa — Basic Requirements</h2>
+                <div class="visa-req-grid">
+                    <div class="visa-req-item"><i class="fas fa-check"></i>Valid passport (minimum 6 months validity)</div>
+                    <div class="visa-req-item"><i class="fas fa-check"></i>Confirmed job offer from Qatari employer</div>
+                    <div class="visa-req-item"><i class="fas fa-check"></i>Employer sponsorship (kafala system)</div>
+                    <div class="visa-req-item"><i class="fas fa-check"></i>Signed employment contract</div>
+                    <div class="visa-req-item"><i class="fas fa-check"></i>Recent passport-size photographs</div>
+                    <div class="visa-req-item"><i class="fas fa-check"></i>Educational certificates (if role requires)</div>
+                    <div class="visa-req-item"><i class="fas fa-check"></i>Police clearance certificate</div>
+                    <div class="visa-req-item"><i class="fas fa-check"></i>Medical examination (GAMCA-approved)</div>
+                    <div class="visa-req-item"><i class="fas fa-check"></i>Biometric registration on arrival</div>
+                    <div class="visa-req-item"><i class="fas fa-check"></i>Qatar ID issued after arrival &amp; approval</div>
+                </div>
+                <div class="visa-note-box">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span><strong>Important:</strong> Qatar operates an employer-sponsored (kafala) visa system. Your employer applies for your visa on your behalf. You cannot independently obtain a standard work visa. <strong>Never pay any fee</strong> for a visa or job offer — this is illegal under Qatar labour law.</span>
+                </div>
+            </div>
+
+            <!-- CTA row -->
+            <div class="cta-row">
+                <a href="apply.html" class="cta-btn cta-primary"><i class="fas fa-file-signature"></i> Update My Application</a>
+                <a href="https://wa.me/254787524212?text=Hello+FindAJob.qa+team%2C+I+would+like+to+check+the+status+of+my+application." class="cta-btn cta-whatsapp" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp Our Team</a>
+                <a href="index.html#search-container" class="cta-btn cta-blue"><i class="fas fa-search"></i> Search More Jobs</a>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>FindAJob.qa</h3>
+                    <p style="color:#bbb;">Driver, labour &amp; domestic worker jobs in Qatar.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="index.html#search-container">Search Jobs</a></li>
+                        <li><a href="apply.html">Apply Now</a></li>
+                        <li><a href="career-advice.html">Career Advice</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Legal</h3>
+                    <ul class="footer-links">
+                        <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                        <li><a href="terms-of-service.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2026 FindAJob.qa. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+    const API_URL = 'https://qatar-jobs-server.onrender.com/api';
+    let activeTrackingRef = '';
+    let chatMessages = [];
+    let chatPoller = null;
+    let presencePoller = null;
+    let chatKeyPromise = null;
+    let typingTimer = null;
+    let lastRenderedMessageId = '';
+    let activeFaqKey = '';
+    let lastIncomingMessageId = '';
+    const FAQ_RESPONSES = {
+      track: 'Please enter your reference number above to see the latest application and visa progress. Your recruiter will update each step here.',
+      documents: 'Your passport copy, passport photo, and CV are required first. Your recruiter may request certificates, police clearance, or medical documents later.',
+      help: 'I can help you track your application, explain document requests, and share messages from the employer. A recruiter usually replies within 24 hours.'
+    };
+
+    function escapeHtml(value) {
+      return String(value || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+    }
+
+    function relativeTime(value) {
+      if (!value) return 'just now';
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return 'just now';
+      return date.toLocaleString('en-GB', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' });
+    }
+
+    function notifyIncomingMessage() {
+      try {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContextClass) return;
+        const context = new AudioContextClass();
+        const oscillator = context.createOscillator();
+        const gain = context.createGain();
+        oscillator.type = 'sine';
+        oscillator.frequency.value = 740;
+        gain.gain.setValueAtTime(0.0001, context.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.06, context.currentTime + 0.01);
+        gain.gain.exponentialRampToValueAtTime(0.0001, context.currentTime + 0.16);
+        oscillator.connect(gain);
+        gain.connect(context.destination);
+        oscillator.start();
+        oscillator.stop(context.currentTime + 0.17);
+      } catch (error) {}
+    }
+
+    function bytesToBase64(bytes) {
+      let binary = '';
+      bytes.forEach(byte => binary += String.fromCharCode(byte));
+      return btoa(binary);
+    }
+    function base64ToBytes(value) {
+      const binary = atob(value);
+      return Uint8Array.from(binary, char => char.charCodeAt(0));
+    }
+    async function getChatKey(ref) {
+      if (chatKeyPromise) return chatKeyPromise;
+      chatKeyPromise = crypto.subtle.digest('SHA-256', new TextEncoder().encode('findajob.qa-chat:' + ref))
+        .then(hash => crypto.subtle.importKey('raw', hash, 'AES-GCM', false, ['encrypt','decrypt']));
+      return chatKeyPromise;
+    }
+    async function encryptChatText(text) {
+      const iv = crypto.getRandomValues(new Uint8Array(12));
+      const key = await getChatKey(activeTrackingRef);
+      const encrypted = await crypto.subtle.encrypt({ name:'AES-GCM', iv }, key, new TextEncoder().encode(text));
+      return { encryptedBody: bytesToBase64(new Uint8Array(encrypted)), iv: bytesToBase64(iv) };
+    }
+    async function decryptChatText(message) {
+      if (!message.is_encrypted) return message.body || '';
+      if (!message.body_ciphertext || !message.encryption_iv) return '[Encrypted message]';
+      try {
+        const key = await getChatKey(activeTrackingRef);
+        const decrypted = await crypto.subtle.decrypt({ name:'AES-GCM', iv:base64ToBytes(message.encryption_iv) }, key, base64ToBytes(message.body_ciphertext));
+        return new TextDecoder().decode(decrypted);
+      } catch (error) {
+        return '[Encrypted message]';
+      }
+    }
+
+    async function renderChat(messages) {
+      const container = document.getElementById('chatMessages');
+      if (!container) return;
+      if (!messages.length) {
+        container.innerHTML = '<div class="chat-empty"><i class="fas fa-comments" style="font-size:1.8rem;color:#8a1538;margin-bottom:10px;"></i><br>Your recruiter will post the first update here. You can ask a question below.</div>';
+        return;
+      }
+      const html = [];
+      for (const message of messages) {
+        const mine = message.sender_role === 'applicant';
+        const text = await decryptChatText(message);
+        const link = message.link_url
+          ? '<a class="chat-link" href="' + escapeHtml(message.link_url) + '" target="_blank" rel="noopener noreferrer"><strong>' + escapeHtml(message.link_title || 'Shared link') + '</strong><br><span>' + escapeHtml(message.link_description || message.link_url) + '</span></a>'
+          : '';
+        const attachment = message.attachment_url
+          ? '<a class="chat-attachment" href="' + escapeHtml(message.attachment_url) + '" target="_blank" rel="noopener noreferrer"><i class="fas fa-paperclip"></i> ' + escapeHtml(message.attachment_name || 'Download attachment') + '</a>'
+          : '';
+        html.push('<div class="bubble-row ' + (mine ? 'mine' : '') + '"><div class="chat-bubble">' +
+          (text ? escapeHtml(text) : '') + link + attachment +
+          '<div class="chat-meta"><span>' + escapeHtml(message.sender_name || 'FindAJob.qa') + '</span><span>' + relativeTime(message.created_at) + '</span>' +
+          (message.is_encrypted ? '<i class="fas fa-lock" title="Encrypted"></i>' : '') + '</div></div></div>');
+      }
+      container.innerHTML = html.join('');
+      container.scrollTop = container.scrollHeight;
+      lastRenderedMessageId = messages[messages.length - 1]?.id || '';
+    }
+
+    function renderEmployers(employers, presence) {
+      const strip = document.getElementById('employerStrip');
+      if (!strip) return;
+      const list = (employers || []).slice(0, 3);
+      if (!list.length) return;
+      strip.innerHTML = list.map(employer => {
+        const state = (presence || []).find(item => item.participant_key === employer.email);
+        const online = state?.online || employer.online;
+        return '<div class="employer-chip">' +
+          (employer.photo_url ? '<img src="' + escapeHtml(employer.photo_url) + '" alt="' + escapeHtml(employer.name) + '">' : '<div class="employer-avatar"><i class="fas fa-user-tie"></i></div>') +
+          '<div><strong>' + escapeHtml(employer.name || employer.company_name || 'Employer') + '</strong><small><span class="presence-dot ' + (online ? 'online' : '') + '"></span>' + (online ? 'Online' : 'Last seen ' + relativeTime(state?.last_seen_at || employer.last_seen_at)) + '</small></div></div>';
+      }).join('');
+    }
+
+    async function refreshChat() {
+      if (!activeTrackingRef) return;
+      try {
+        const response = await fetch(API_URL + '/applications/track/' + encodeURIComponent(activeTrackingRef));
+        if (!response.ok) return;
+        const data = await response.json();
+        chatMessages = data.messages || [];
+        const latest = chatMessages[chatMessages.length - 1];
+        if (lastIncomingMessageId && latest && latest.id !== lastIncomingMessageId && latest.sender_role !== 'applicant') {
+          notifyIncomingMessage();
+        }
+        if (latest) lastIncomingMessageId = latest.id;
+        await renderChat(chatMessages);
+        renderEmployers(data.employers, data.presence);
+        const typing = (data.presence || []).find(item => item.typing && item.role !== 'applicant');
+        document.getElementById('typingRow').classList.toggle('show', !!typing);
+        if (typing) document.getElementById('typingName').textContent = typing.display_name || 'Recruiter';
+      } catch (error) {}
+    }
+
+    async function updatePresence(typing) {
+      if (!activeTrackingRef) return;
+      try {
+        const response = await fetch(API_URL + '/applications/' + encodeURIComponent(activeTrackingRef) + '/presence', {
+          method:'POST', headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({ role:'applicant', name:document.getElementById('infoPosition')?.textContent || 'Applicant', online:true, typing:!!typing })
+        });
+        if (response.ok) renderEmployers([], (await response.json()).presence);
+      } catch (error) {}
+    }
+
+    async function sendChatMessage(event) {
+      event.preventDefault();
+      if (!activeTrackingRef) return;
+      const text = document.getElementById('chatText').value.trim();
+      const link = document.getElementById('chatLink').value.trim();
+      const fileInput = document.getElementById('chatFile');
+      if (!text && !link && !fileInput.files.length) return;
+      const button = document.getElementById('chatSend');
+      button.disabled = true;
+      try {
+        const encrypted = text ? await encryptChatText(text) : {};
+        const form = new FormData();
+        form.append('senderRole','applicant');
+        form.append('senderName','Applicant');
+        form.append('isEncrypted', text ? 'true' : 'false');
+        if (activeFaqKey) form.append('faqKey', activeFaqKey);
+        if (text) { form.append('encryptedBody', encrypted.encryptedBody); form.append('iv', encrypted.iv); }
+        if (link) form.append('linkUrl', link);
+        if (fileInput.files[0]) form.append('attachments', fileInput.files[0]);
+        const response = await fetch(API_URL + '/applications/' + encodeURIComponent(activeTrackingRef) + '/messages', { method:'POST', body:form });
+        if (!response.ok) throw new Error('Message could not be sent.');
+        document.getElementById('chatText').value = '';
+        document.getElementById('chatLink').value = '';
+        fileInput.value = '';
+        document.getElementById('chatFileName').textContent = '';
+        activeFaqKey = '';
+        await refreshChat();
+      } catch (error) {
+        alert(error.message);
+      } finally {
+        button.disabled = false;
+        updatePresence(false);
+      }
+    }
+
+    const STATUS_MAP = {
+      submitted:             1,
+      documents_review:      2,
+      employer_review:       3,
+      interview_scheduled:   4,
+      job_offer:             5,
+      visa_processing:       6,
+      visa_approved:         7,
+      flight_prep:           8,
+      arrived:               9,
+      employed:              10,
+      cancelled:              0,
+      rejected:              0,
+    };
+
+    function fmtDate(d) {
+      if (!d) return '—';
+      return new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+    }
+
+    function updateTimeline(statusStep) {
+      document.querySelectorAll('.tl-item').forEach(function(item, i) {
+        var dot = item.querySelector('.tl-dot');
+        var title = item.querySelector('.tl-title');
+        var badge = item.querySelector('.tl-badge');
+        var step = i + 1;
+        dot.className = 'tl-dot';
+        if (badge) badge.className = 'tl-badge';
+        if (step < statusStep) {
+          dot.classList.add('done'); title.classList.add('done');
+          if (badge) { badge.classList.add('done'); badge.textContent = 'Completed'; }
+        } else if (step === statusStep) {
+          dot.classList.add('active'); title.classList.add('active');
+          if (badge) { badge.classList.add('active'); badge.textContent = 'In Progress'; }
+        } else {
+          dot.classList.add('upcoming');
+          if (badge) { badge.classList.add('upcoming'); badge.textContent = 'Upcoming'; }
+        }
+      });
+    }
+
+    function updateStatusCards(status) {
+      var step = STATUS_MAP[status] || 1;
+      var cards = {
+        'card-application': step >= 1 ? 'Submitted' : 'Pending',
+        'card-documents':   step >= 2 ? (step > 2 ? 'Reviewed' : 'Under Review') : 'Pending',
+        'card-employer':    step >= 3 ? (step > 3 ? 'Reviewed' : 'In Progress') : 'Pending',
+        'card-interview':   step >= 4 ? (step > 4 ? 'Completed' : 'Scheduled') : 'Not Scheduled',
+        'card-offer':       step >= 5 ? (step > 5 ? 'Signed' : 'Issued') : 'Awaiting',
+        'card-visa':        step >= 7 ? 'Approved' : step >= 6 ? 'Processing' : 'Not Started',
+      };
+      var classes = {
+        'card-application': step >= 1 ? 'status-badge badge-review' : 'status-badge badge-pending',
+        'card-documents':   step >= 2 ? 'status-badge badge-review' : 'status-badge badge-pending',
+        'card-employer':    step >= 3 ? 'status-badge badge-processing' : 'status-badge badge-pending',
+        'card-interview':   step >= 4 ? 'status-badge badge-selected' : 'status-badge badge-pending',
+        'card-offer':       step >= 5 ? 'status-badge badge-approved' : 'status-badge badge-pending',
+        'card-visa':        step >= 7 ? 'status-badge badge-approved' : step >= 6 ? 'status-badge badge-processing' : 'status-badge badge-pending',
+      };
+      for (var id in cards) {
+        var el = document.getElementById(id);
+        if (el) { el.textContent = cards[id]; el.className = classes[id]; }
+      }
+    }
+
+    async function loadApplication(ref) {
+      var errEl = document.getElementById('lookupError');
+      if (errEl) errEl.style.display = 'none';
+      try {
+        var r = await fetch(API_URL + '/applications/track/' + encodeURIComponent(ref));
+        if (!r.ok) {
+          if (errEl) { errEl.textContent = 'Application not found. Please check your tracking number.'; errEl.style.display = 'block'; }
+          return;
+        }
+        var data = await r.json();
+        var a = data.application;
+         activeTrackingRef = a.tracking_number;
+         chatKeyPromise = null;
+
+        // Header ref
+        document.getElementById('displayAppRef').textContent = a.tracking_number;
+        document.getElementById('noRef').style.display = 'none';
+        document.getElementById('infoRef').textContent = a.tracking_number;
+        document.getElementById('infoPosition').textContent = a.job_title || 'General Application';
+        document.getElementById('infoDate').textContent = fmtDate(a.submitted_at);
+
+        // Current status in info panel
+        var statusEl = document.querySelector('#infoRef').closest('.info-card');
+        if (statusEl) {
+          var rows = statusEl.querySelectorAll('.info-row');
+          rows.forEach(function(row) {
+            if (row.querySelector('.info-label') && row.querySelector('.info-label').textContent === 'Current Status') {
+              row.querySelector('.info-value').textContent = a.status.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+            }
+          });
+        }
+
+        updateStatusCards(a.status);
+        updateTimeline(STATUS_MAP[a.status] || 1);
+
+         var terminalBanner = document.getElementById('statusBanner');
+         if (a.status === 'rejected' || a.status === 'cancelled') {
+           if (!terminalBanner) {
+             terminalBanner = document.createElement('div');
+             terminalBanner.id = 'statusBanner';
+             var statusGrid = document.querySelector('.status-grid');
+             if (statusGrid) statusGrid.parentNode.insertBefore(terminalBanner, statusGrid);
+           }
+           terminalBanner.style.cssText = 'background:#fff1f2;color:#9f1239;border:2px solid #fecdd3;border-radius:12px;padding:15px 18px;margin-bottom:22px;';
+           terminalBanner.innerHTML = '<i class="fas fa-circle-exclamation"></i> This application is currently <strong>' + escapeHtml(a.status.replace(/_/g, ' ')) + '</strong>. Please use the support chat below if you need clarification.';
+         } else if (terminalBanner) {
+           terminalBanner.remove();
+         }
+
+        // Show recruiter note as notification
+        if (a.admin_notes) {
+          var banner = document.createElement('div');
+          banner.style.cssText = 'background:linear-gradient(135deg,#0d4a8a,#1a6fc4);color:#fff;border-radius:12px;padding:18px 24px;margin-bottom:22px;display:flex;align-items:flex-start;gap:14px;';
+          banner.innerHTML = '<i class="fas fa-bell" style="margin-top:2px;flex-shrink:0;font-size:1.2rem;color:#ffcc00;"></i><div><strong style="font-family:Montserrat,sans-serif;">Message from Recruiter:</strong><p style="margin-top:6px;opacity:.95;">' + a.admin_notes + '</p></div>';
+          var grid = document.querySelector('.status-grid');
+          if (grid) grid.parentNode.insertBefore(banner, grid);
+        }
+
+        var employer = data.employer;
+        var comments = data.comments || [];
+        var employerPanel = document.getElementById('employerUpdatesPanel');
+        if (!employerPanel) {
+          employerPanel = document.createElement('div');
+          employerPanel.id = 'employerUpdatesPanel';
+          employerPanel.style.cssText = 'background:#fff;border:2px solid #e1e5eb;border-radius:15px;box-shadow:0 8px 25px rgba(0,0,0,.08);padding:28px;margin-bottom:28px;';
+          var timelineSection = document.querySelector('.timeline-section');
+          if (timelineSection) timelineSection.parentNode.insertBefore(employerPanel, timelineSection);
+        }
+        if (employer || comments.length) {
+          var employerPhoto = employer && employer.photo_url
+            ? '<img src="' + employer.photo_url + '" alt="Employer" style="width:58px;height:58px;border-radius:50%;object-fit:cover;border:3px solid #ffcc00;">'
+            : '<div style="width:58px;height:58px;border-radius:50%;background:#8a1538;color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.4rem;"><i class="fas fa-user-tie"></i></div>';
+          var employerName = employer ? (employer.name || employer.company_name || 'Employer') : 'Employer';
+          var commentsHtml = comments.length
+            ? comments.map(function(comment) {
+                return '<div style="padding:14px 0;border-top:1px solid #f0f0f0;"><strong style="color:#0d4a8a;">' + (comment.employer_name || employerName) + '</strong><span style="color:#999;font-size:.8rem;margin-left:10px;">' + fmtDate(comment.created_at) + '</span><p style="margin-top:5px;color:#555;">' + comment.comment + '</p></div>';
+              }).join('')
+            : '<p style="color:#777;margin-top:12px;">Your employer has not added a message yet.</p>';
+          employerPanel.innerHTML = '<div style="display:flex;align-items:center;gap:14px;">' + employerPhoto + '<div><h2 style="font-family:Montserrat,sans-serif;color:#0d4a8a;font-size:1.35rem;">Employer Updates</h2><p style="color:#666;">' + employerName + (employer && employer.company_name ? ' · ' + employer.company_name : '') + '</p></div></div>' + '<div style="margin-top:18px;">' + commentsHtml + '</div>';
+        } else {
+          employerPanel.style.display = 'none';
+        }
+
+        // Store for next visit
+        try { localStorage.setItem('fjqTrackingNum', a.tracking_number); } catch(e){}
+        var lookupSection = document.getElementById('lookupSection');
+        if (lookupSection) lookupSection.style.display = 'none';
+         await refreshChat();
+         updatePresence(false);
+         if (!chatPoller) chatPoller = setInterval(refreshChat, 12000);
+         if (!presencePoller) presencePoller = setInterval(function() { updatePresence(false); }, 25000);
+
+      } catch (err) {
+        if (errEl) { errEl.textContent = 'Could not connect to server. Please try again.'; errEl.style.display = 'block'; }
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', function() {
+      var urlRef = new URLSearchParams(window.location.search).get('ref');
+      var storedRef = urlRef || localStorage.getItem('fjqTrackingNum') || localStorage.getItem('fjqAppRef');
+      if (storedRef) {
+        document.getElementById('trackInput').value = storedRef;
+        loadApplication(storedRef.trim().toUpperCase());
+      }
+      document.getElementById('trackBtn').addEventListener('click', function() {
+        var ref = document.getElementById('trackInput').value.trim().toUpperCase();
+        if (!ref) { document.getElementById('lookupError').textContent = 'Please enter your tracking number.'; document.getElementById('lookupError').style.display = 'block'; return; }
+        loadApplication(ref);
+      });
+      document.getElementById('trackInput').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') document.getElementById('trackBtn').click();
+      });
+       document.getElementById('chatForm').addEventListener('submit', sendChatMessage);
+       document.getElementById('chatFile').addEventListener('change', function() {
+         document.getElementById('chatFileName').textContent = this.files[0] ? this.files[0].name : '';
+       });
+       document.getElementById('chatText').addEventListener('input', function() {
+         updatePresence(true);
+         clearTimeout(typingTimer);
+         typingTimer = setTimeout(function() { updatePresence(false); }, 1400);
+       });
+       document.querySelectorAll('[data-faq]').forEach(function(button) {
+         button.addEventListener('click', function() {
+           var input = document.getElementById('chatText');
+           input.value = this.dataset.faq === 'track'
+             ? 'My reference number is ' + (activeTrackingRef || '________') + '. Please help me track my visa application.'
+             : (FAQ_RESPONSES[this.dataset.faq] || '');
+           activeFaqKey = this.dataset.faq || '';
+           input.focus();
+           updatePresence(true);
+         });
+       });
+    });
+    </script>
+</body>
+</html>
