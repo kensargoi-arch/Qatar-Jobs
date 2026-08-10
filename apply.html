@@ -1,0 +1,1674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apply for a Job — FindAJob.qa</title>
+<link rel="icon" type="image/png" href="qatar.png">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+/* ===== RESET & BASE ===== */
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Poppins',sans-serif;background:#f0f2f5;color:#333;line-height:1.65;}
+img{max-width:100%;}
+
+/* ===== HEADER ===== */
+header{background:linear-gradient(to right,#8a1538 0%,#8a1538 55%,#fff 55%,#fff 100%);padding:18px 0;box-shadow:0 4px 14px rgba(0,0,0,.12);}
+.hdr{max-width:1100px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+.logo{display:flex;align-items:center;gap:10px;}
+.logo i{font-size:2.2rem;color:#ffcc00;}
+.logo h1{font-family:'Montserrat',sans-serif;font-size:1.6rem;font-weight:800;color:#fff;}
+.logo span{color:#ffcc00;}
+nav a{color:#fff;text-decoration:none;font-weight:600;padding:7px 14px;border-radius:5px;font-size:.9rem;transition:background .2s;}
+nav a:hover{background:rgba(255,255,255,.2);}
+nav{display:flex;gap:6px;flex-wrap:wrap;}
+
+/* ===== MAIN WRAPPER ===== */
+main{max-width:860px;margin:32px auto 80px;padding:0 20px;}
+.back-link{display:inline-flex;align-items:center;gap:7px;color:#8a1538;text-decoration:none;font-weight:600;font-size:.93rem;margin-bottom:22px;transition:opacity .2s;}
+.back-link:hover{opacity:.75;}
+
+/* ===== PAGE TITLE ===== */
+.page-title{text-align:center;margin-bottom:30px;}
+.page-title h2{font-family:'Montserrat',sans-serif;font-size:2rem;color:#0d4a8a;margin-bottom:6px;}
+.page-title p{color:#666;font-size:.97rem;max-width:580px;margin:0 auto;}
+
+/* ===== STEPPER ===== */
+.stepper{display:flex;align-items:flex-start;justify-content:center;margin-bottom:38px;gap:0;overflow-x:auto;padding-bottom:4px;}
+.step-item{display:flex;flex-direction:column;align-items:center;position:relative;flex:1;min-width:60px;}
+.step-item:not(:last-child)::after{content:'';position:absolute;top:20px;left:50%;width:100%;height:3px;background:#dde1e7;z-index:0;}
+.step-item.done::after,.step-item.active::after{background:#8a1538;}
+.step-dot{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:700;z-index:1;position:relative;transition:all .35s;border:3px solid #dde1e7;background:#fff;color:#aaa;}
+.step-item.done .step-dot{background:#8a1538;border-color:#8a1538;color:#fff;}
+.step-item.active .step-dot{background:#fff;border-color:#8a1538;color:#8a1538;box-shadow:0 0 0 5px rgba(138,21,56,.12);}
+.step-label{font-size:.68rem;font-weight:600;color:#aaa;margin-top:7px;text-align:center;line-height:1.3;max-width:70px;}
+.step-item.active .step-label{color:#8a1538;}
+.step-item.done .step-label{color:#555;}
+
+/* ===== FORM CARD ===== */
+.form-card{background:#fff;border-radius:16px;box-shadow:0 8px 30px rgba(0,0,0,.09);overflow:hidden;}
+.card-header{background:linear-gradient(135deg,#8a1538,#b3254c);padding:26px 34px;color:#fff;}
+.card-header h3{font-family:'Montserrat',sans-serif;font-size:1.35rem;margin-bottom:4px;display:flex;align-items:center;gap:10px;}
+.card-header p{font-size:.9rem;opacity:.9;margin-top:2px;}
+.card-body{padding:34px;}
+
+/* ===== INSTRUCTION BOX ===== */
+.instr{background:#f0f7ff;border-left:4px solid #0d4a8a;border-radius:0 10px 10px 0;padding:14px 18px;margin-bottom:26px;font-size:.9rem;color:#1a3a5c;}
+.instr strong{display:block;margin-bottom:5px;color:#0d4a8a;}
+.instr ul{padding-left:18px;margin-top:5px;}
+.instr ul li{margin-bottom:3px;}
+.instr-warn{background:#fff8e1;border-left-color:#f59e0b;color:#7c5a00;}
+.instr-warn strong{color:#92660a;}
+
+/* ===== FORM FIELDS ===== */
+.row{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px;}
+.row.three{grid-template-columns:1fr 1fr 1fr;}
+.row.one{grid-template-columns:1fr;}
+.fg{margin-bottom:18px;}
+label{display:block;margin-bottom:6px;font-weight:600;font-size:.9rem;color:#0d4a8a;}
+.req{color:#8a1538;}
+.fc{width:100%;padding:12px 14px;border:2px solid #dde1e7;border-radius:8px;font-family:'Poppins',sans-serif;font-size:.95rem;transition:border-color .25s,box-shadow .25s;background:#f9fafc;color:#333;}
+.fc:focus{outline:none;border-color:#8a1538;background:#fff;box-shadow:0 0 0 3px rgba(138,21,56,.1);}
+.email-check{display:flex;align-items:center;gap:7px;font-size:.78rem;margin-top:5px;min-height:18px;}
+.email-check.checking{color:#64748b}.email-check.ok{color:#166534}.email-check.exists{color:#991b1b}.email-check i{width:13px;text-align:center;}
+select.fc{cursor:pointer;}
+textarea.fc{min-height:90px;resize:vertical;}
+.hint{font-size:.78rem;color:#888;margin-top:4px;}
+
+/* Radio / Checkbox group */
+.radio-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px;}
+.opt{display:flex;align-items:center;gap:7px;padding:9px 15px;border:2px solid #dde1e7;border-radius:8px;cursor:pointer;font-size:.88rem;transition:all .2s;background:#f9fafc;}
+.opt:hover{border-color:#8a1538;background:#fff9fb;}
+.opt input{accent-color:#8a1538;width:15px;height:15px;}
+.opt.checked{border-color:#8a1538;background:#fff0f4;}
+
+/* Industry checkboxes */
+.ind-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:9px;margin-top:6px;}
+.ind-chk{display:flex;align-items:center;gap:7px;padding:9px 12px;border:2px solid #dde1e7;border-radius:8px;cursor:pointer;font-size:.85rem;transition:all .2s;background:#f9fafc;}
+.ind-chk:hover{border-color:#8a1538;background:#fff9fb;}
+.ind-chk input{accent-color:#8a1538;width:15px;height:15px;}
+
+/* ===== DOCUMENT UPLOAD ===== */
+.doc-section{margin-bottom:26px;}
+.doc-section h4{font-family:'Montserrat',sans-serif;font-size:.95rem;color:#0d4a8a;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.upload-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.uc{border:2px dashed #cbd5e1;border-radius:12px;padding:18px 16px;background:#f9fafc;transition:all .25s;cursor:pointer;position:relative;}
+.uc:hover,.uc.has-file{border-style:solid;}
+.uc:hover{border-color:#8a1538;background:#fff9fb;}
+.uc.has-file{border-color:#16a34a;background:#f0fdf4;}
+.uc input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.uc-inner{display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none;text-align:center;}
+.uc-icon{font-size:1.8rem;}
+.uc:not(.has-file) .uc-icon{color:#8a1538;}
+.uc.has-file .uc-icon{color:#16a34a;}
+.uc-label{font-size:.88rem;font-weight:600;color:#333;}
+.uc-tag{font-size:.73rem;font-weight:700;padding:3px 9px;border-radius:12px;display:inline-block;margin-top:2px;}
+.tag-required{background:#fee2e2;color:#991b1b;}
+.tag-optional{background:#f3f4f6;color:#555;}
+.tag-conditional{background:#fef9c3;color:#854d0e;}
+.tag-done{background:#dcfce7;color:#166534;}
+.uc-filename{font-size:.75rem;color:#16a34a;margin-top:3px;font-weight:600;word-break:break-all;}
+.uc-hint{font-size:.73rem;color:#888;margin-top:3px;}
+.uc-preview{max-width:100%;margin-top:8px;display:flex;justify-content:center;}
+.uc-preview img{max-height:92px;border-radius:6px;border:1px solid #cbd5e1;}
+.uc-preview a{font-size:.75rem;color:#0d4a8a;font-weight:600;word-break:break-all;}
+
+/* ===== DECLARATION CHECKS ===== */
+.decl{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;background:#f9fafc;border:1px solid #e2e8f0;border-radius:8px;margin-bottom:12px;font-size:.88rem;color:#444;}
+.decl input{margin-top:3px;flex-shrink:0;accent-color:#8a1538;width:17px;height:17px;}
+
+/* ===== NAVIGATION BUTTONS ===== */
+.nav-row{display:flex;justify-content:space-between;align-items:center;margin-top:32px;gap:12px;flex-wrap:wrap;}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 26px;border-radius:8px;font-family:'Poppins',sans-serif;font-size:.95rem;font-weight:700;border:none;cursor:pointer;transition:all .3s;text-decoration:none;}
+.btn-prev{background:#f1f5f9;color:#475569;}
+.btn-prev:hover{background:#e2e8f0;}
+.btn-next{background:linear-gradient(135deg,#8a1538,#b3254c);color:#fff;}
+.btn-next:hover{opacity:.9;transform:translateY(-2px);box-shadow:0 8px 20px rgba(138,21,56,.3);}
+.btn-submit{background:linear-gradient(135deg,#0d4a8a,#1a6fc4);color:#fff;}
+.btn-submit:hover{opacity:.9;transform:translateY(-2px);box-shadow:0 8px 20px rgba(13,74,138,.3);}
+.btn-pdf{background:linear-gradient(135deg,#166534,#16a34a);color:#fff;}
+.btn-pdf:hover{opacity:.9;transform:translateY(-2px);box-shadow:0 8px 20px rgba(22,101,52,.3);}
+.btn-pdf-outline{background:#fff;color:#166534;border:2px solid #16a34a;}
+.btn-pdf-outline:hover{background:#f0fdf4;}
+
+/* Step counter */
+.step-counter{font-size:.82rem;color:#888;font-weight:500;}
+
+/* ===== SUCCESS SCREEN ===== */
+#successScreen{display:none;text-align:center;padding:50px 30px;}
+.success-icon{font-size:4rem;color:#16a34a;margin-bottom:18px;}
+#successScreen h2{font-family:'Montserrat',sans-serif;font-size:1.8rem;color:#0d4a8a;margin-bottom:12px;}
+#successScreen p{color:#555;max-width:500px;margin:0 auto 22px;line-height:1.7;}
+.ref-badge{display:inline-flex;align-items:center;gap:9px;background:linear-gradient(135deg,#f0f7ff,#e0eeff);border:2px solid #bfdbfe;color:#1e40af;padding:12px 22px;border-radius:10px;font-weight:700;font-size:1.05rem;margin-bottom:26px;}
+.next-steps{text-align:left;background:#f9fafc;border:2px solid #e2e8f0;border-radius:12px;padding:22px 26px;margin:24px auto;max-width:500px;}
+.next-steps h4{font-family:'Montserrat',sans-serif;color:#0d4a8a;margin-bottom:12px;font-size:1rem;}
+.next-steps li{font-size:.88rem;color:#444;margin-bottom:8px;display:flex;gap:9px;align-items:flex-start;}
+.next-steps li i{color:#8a1538;flex-shrink:0;margin-top:3px;}
+.success-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:10px;}
+
+/* ===== VALIDATION ERROR ===== */
+.err-msg{background:#fee2e2;color:#991b1b;border:1px solid #fca5a5;padding:11px 16px;border-radius:8px;font-size:.88rem;margin-top:12px;display:none;align-items:center;gap:8px;}
+.fc.invalid{border-color:#ef4444;}
+
+/* ===== PROGRESS BAR ===== */
+.progress-bar-wrap{background:#e2e8f0;border-radius:4px;height:5px;margin-bottom:28px;}
+.progress-bar-fill{height:100%;border-radius:4px;background:linear-gradient(to right,#8a1538,#c84a6e);transition:width .4s ease;}
+
+/* ===== FOOTER ===== */
+footer{background:linear-gradient(to right,#0d1b2a,#1a2c42);color:#fff;padding:38px 0 18px;margin-top:70px;}
+.foot{max-width:1100px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:30px;}
+.foot h3{font-family:'Montserrat',sans-serif;color:#ffcc00;margin-bottom:14px;font-size:1.05rem;}
+.foot ul{list-style:none;}
+.foot li{margin-bottom:7px;}
+.foot a{color:#ccc;text-decoration:none;font-size:.88rem;transition:color .2s;}
+.foot a:hover{color:#ffcc00;}
+.copy{text-align:center;padding-top:16px;border-top:1px solid #243447;color:#888;font-size:.82rem;margin-top:26px;}
+.public-contact-links{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px;}
+.public-contact-links a{display:inline-flex;align-items:center;gap:8px;padding:8px 11px;border-radius:7px;background:rgba(255,255,255,.08);color:#fff;text-decoration:none;font-size:.85rem;}
+.public-contact-links a:hover{background:rgba(255,204,0,.2);color:#ffcc00;}
+.whatsapp-float{position:fixed;right:22px;bottom:22px;z-index:1000;display:none;align-items:center;gap:10px;max-width:min(360px,calc(100vw - 36px));padding:12px 14px 12px 12px;border-radius:16px;background:#25d366;color:#fff;box-shadow:0 10px 30px rgba(0,0,0,.25);text-decoration:none;font-weight:700;}
+.whatsapp-float.is-visible{display:flex;}
+.whatsapp-float-icon{font-size:2rem;line-height:1;}
+.whatsapp-float-copy{min-width:0;}
+.whatsapp-float-copy strong{display:block;font-size:.9rem;}
+.whatsapp-float-copy span{display:block;margin-top:2px;font-size:.76rem;font-weight:400;white-space:normal;}
+.whatsapp-float-close{align-self:flex-start;border:0;background:transparent;color:rgba(255,255,255,.9);cursor:pointer;font-size:1rem;line-height:1;padding:2px;}
+.whatsapp-float-close:hover{color:#fff;}
+@media(max-width:520px){.whatsapp-float{right:12px;bottom:12px;}}
+
+/* ===== PRINT / PDF STYLES ===== */
+@media print{
+  header,footer,nav,.stepper,.nav-row,.progress-bar-wrap,#app-form,.back-link,.page-title{display:none!important;}
+  body{background:#fff;font-size:10pt;}
+  .form-card{box-shadow:none;border:none;}
+  #successScreen{display:none!important;}
+  #printDoc{display:block!important;}
+}
+#printDoc{display:none;}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:680px){
+  .hdr{flex-direction:column;text-align:center;}
+  nav{justify-content:center;}
+  .row,.row.three{grid-template-columns:1fr;}
+  .upload-cards{grid-template-columns:1fr;}
+  .card-body{padding:22px 18px;}
+  .card-header{padding:22px 18px;}
+  .stepper{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px 6px;overflow:visible;padding:0 2px 8px;}
+  .step-item{min-width:0;}
+  .step-item:not(:last-child)::after{display:none;}
+  .step-label{font-size:.66rem;max-width:90px;}
+  .step-dot{width:34px;height:34px;font-size:.75rem;}
+}
+
+/* ===== SESSION RESUME PROMPT ===== */
+.resume-modal{position:fixed;inset:0;background:rgba(13,27,42,.62);display:none;align-items:center;justify-content:center;padding:20px;z-index:100;}
+.resume-modal.open{display:flex;}
+.resume-card{background:#fff;border-radius:16px;max-width:460px;width:100%;padding:30px;box-shadow:0 18px 55px rgba(0,0,0,.28);}
+.resume-card h3{font-family:'Montserrat',sans-serif;color:#0d4a8a;margin-bottom:10px;font-size:1.25rem;}
+.resume-card p{color:#555;font-size:.92rem;margin-bottom:22px;}
+.resume-actions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;}
+</style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header>
+  <div class="hdr">
+    <div class="logo">
+      <i class="fas fa-file-signature"></i>
+      <h1>FindAJob<span>.qa</span></h1>
+    </div>
+    <nav>
+      <a href="index.html"><i class="fas fa-home"></i> Home</a>
+      <a href="index.html#search-container">Search Jobs</a>
+      <a href="dashboard.html"><i class="fas fa-tasks"></i> My Application</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ===== PRINTABLE DOCUMENT (hidden until print) ===== -->
+<div id="printDoc"></div>
+
+<!-- ===== SESSION RESUME PROMPT ===== -->
+<div class="resume-modal" id="resumeModal" role="dialog" aria-modal="true" aria-labelledby="resumeTitle">
+  <div class="resume-card">
+    <h3 id="resumeTitle"><i class="fas fa-clock-rotate-left" style="color:#8a1538"></i> Resume your application</h3>
+    <p>We found a saved application session on this device. Would you like to continue where you left off?</p>
+    <div class="resume-actions">
+      <button class="btn btn-prev" type="button" onclick="startNewApplication()">Start over</button>
+      <button class="btn btn-next" type="button" onclick="resumeApplication()">Resume session</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MAIN ===== -->
+<main>
+  <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Jobs</a>
+
+  <div class="page-title">
+    <h2><i class="fas fa-briefcase" style="color:#8a1538"></i> Job Application Form</h2>
+    <p>Complete each step carefully. Your progress is saved automatically — you can return at any time.</p>
+  </div>
+
+  <!-- Stepper -->
+  <div class="stepper" id="stepper">
+    <div class="step-item" data-step="1"><div class="step-dot">1</div><div class="step-label">Personal Info</div></div>
+    <div class="step-item" data-step="2"><div class="step-dot">2</div><div class="step-label">Passport &amp; Visa</div></div>
+    <div class="step-item" data-step="3"><div class="step-dot">3</div><div class="step-label">Job Details</div></div>
+    <div class="step-item" data-step="4"><div class="step-dot">4</div><div class="step-label">Education &amp; Work</div></div>
+    <div class="step-item" data-step="5"><div class="step-dot">5</div><div class="step-label">Skills</div></div>
+    <div class="step-item" data-step="6"><div class="step-dot">6</div><div class="step-label">Emergency Contact</div></div>
+    <div class="step-item" data-step="7"><div class="step-dot">7</div><div class="step-label">Documents</div></div>
+    <div class="step-item" data-step="8"><div class="step-dot">8</div><div class="step-label">Review &amp; Submit</div></div>
+  </div>
+
+  <!-- Progress bar -->
+  <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressBar"></div></div>
+
+  <!-- Form card -->
+  <div class="form-card" id="app-form">
+
+    <!-- ===== STEP 1: PERSONAL INFO ===== -->
+    <div class="step-panel" data-panel="1">
+      <div class="card-header">
+        <h3><i class="fas fa-user"></i> Step 1 of 8 — Personal Information</h3>
+        <p>Your basic personal details. Enter your name exactly as it appears in your passport.</p>
+      </div>
+      <div class="card-body">
+        <div class="instr">
+          <strong><i class="fas fa-info-circle"></i> Instructions</strong>
+          All personal details must match your passport exactly. This information is used to prepare your job offer and visa application. Double-check spelling carefully.
+        </div>
+        <div class="row">
+          <div class="fg">
+            <label for="fullName">Full Name (as in passport) <span class="req">*</span></label>
+            <input id="fullName" class="fc" type="text" placeholder="Exactly as shown in your passport" autocomplete="name">
+            <div class="hint">Use capital letters as in your passport e.g. JOHN KAMAU MWANGI</div>
+          </div>
+          <div class="fg">
+            <label for="gender">Gender <span class="req">*</span></label>
+            <select id="gender" class="fc">
+              <option value="">Select gender</option>
+              <option>Male</option><option>Female</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="fg">
+            <label for="dob">Date of Birth <span class="req">*</span></label>
+            <input id="dob" class="fc" type="date">
+            <div class="hint">You must be 21–55 years old for most Qatar work visas</div>
+          </div>
+          <div class="fg">
+            <label for="nationality">Nationality <span class="req">*</span></label>
+            <input id="nationality" class="fc" type="text" placeholder="e.g. Kenyan, Ethiopian, Filipino, Nepali">
+          </div>
+        </div>
+        <div class="row">
+          <div class="fg">
+            <label for="maritalStatus">Marital Status</label>
+            <select id="maritalStatus" class="fc">
+              <option value="">Select</option>
+              <option>Single</option><option>Married</option><option>Divorced</option><option>Widowed</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label for="religion">Religion</label>
+            <input id="religion" class="fc" type="text" placeholder="Optional">
+          </div>
+        </div>
+        <div class="row">
+          <div class="fg">
+            <label for="countryOfResidence">Country of Residence <span class="req">*</span></label>
+            <input id="countryOfResidence" class="fc" type="text" placeholder="Country where you currently live">
+          </div>
+          <div class="fg">
+            <label for="currentAddress">Current Town / City <span class="req">*</span></label>
+            <input id="currentAddress" class="fc" type="text" placeholder="e.g. Nairobi, Manila, Kathmandu">
+          </div>
+        </div>
+        <div class="row">
+          <div class="fg">
+            <label for="phone">WhatsApp Phone Number <span class="req">*</span></label>
+            <input id="phone" class="fc" type="tel" placeholder="+260 7XX XXX XXX (include country code)" autocomplete="tel">
+            <div class="hint">We will contact you on this number — ensure it has WhatsApp</div>
+          </div>
+          <div class="fg">
+            <label for="email">Email Address</label>
+            <input id="email" class="fc" type="email" placeholder="Optional but recommended" autocomplete="email">
+            <div id="emailCheck" class="email-check" aria-live="polite"></div>
+          </div>
+        </div>
+        <div id="err1" class="err-msg"><i class="fas fa-exclamation-circle"></i><span></span></div>
+        <div class="nav-row">
+          <span class="step-counter">Step 1 of 8</span>
+          <button class="btn btn-next" onclick="nextStep(1)"><span>Next</span><i class="fas fa-arrow-right"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== STEP 2: PASSPORT & VISA ===== -->
+    <div class="step-panel" data-panel="2" style="display:none">
+      <div class="card-header">
+        <h3><i class="fas fa-passport"></i> Step 2 of 8 — Passport &amp; Visa Details</h3>
+        <p>Your travel document details and Qatar visa history.</p>
+      </div>
+      <div class="card-body">
+        <div class="instr">
+          <strong><i class="fas fa-passport"></i> Passport Requirements</strong>
+          Your passport must be valid for <strong>at least 6 months</strong> from the date you intend to travel. If your passport expires in less than 6 months, you must renew it before applying.
+        </div>
+        <div class="row">
+          <div class="fg">
+            <label for="passportNumber">Passport Number <span class="req">*</span></label>
+            <input id="passportNumber" class="fc" type="text" placeholder="e.g. A12345678">
+          </div>
+          <div class="fg">
+            <label for="passportExpiry">Passport Expiry Date <span class="req">*</span></label>
+            <input id="passportExpiry" class="fc" type="date">
+            <div class="hint">Must be at least 6 months from now</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="fg">
+            <label>Do you have a valid passport? <span class="req">*</span></label>
+            <div class="radio-row">
+              <label class="opt"><input type="radio" name="hasPassport" value="Yes">Yes — my passport is valid</label>
+              <label class="opt"><input type="radio" name="hasPassport" value="No">No — I need to renew</label>
+            </div>
+          </div>
+          <div class="fg">
+            <label>Have you worked in Qatar before?</label>
+            <div class="radio-row">
+              <label class="opt"><input type="radio" name="workedQatar" value="Yes">Yes</label>
+              <label class="opt"><input type="radio" name="workedQatar" value="No">No</label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="fg">
+            <label>Have you ever been denied a Qatar visa?</label>
+            <div class="radio-row">
+              <label class="opt"><input type="radio" name="deniedVisa" value="Yes">Yes</label>
+              <label class="opt"><input type="radio" name="deniedVisa" value="No">No</label>
+            </div>
+          </div>
+          <div class="fg">
+            <label>Do you currently hold any Qatar visa?</label>
+            <div class="radio-row">
+              <label class="opt"><input type="radio" name="hasQatarVisa" value="Yes">Yes</label>
+              <label class="opt"><input type="radio" name="hasQatarVisa" value="No">No</label>
+            </div>
+          </div>
+        </div>
+        <div id="err2" class="err-msg"><i class="fas fa-exclamation-circle"></i><span></span></div>
+        <div class="nav-row">
+          <button class="btn btn-prev" onclick="prevStep(2)"><i class="fas fa-arrow-left"></i><span>Previous</span></button>
+          <span class="step-counter">Step 2 of 8</span>
+          <button class="btn btn-next" onclick="nextStep(2)"><span>Next</span><i class="fas fa-arrow-right"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== STEP 3: JOB DETAILS ===== -->
+    <div class="step-panel" data-panel="3" style="display:none">
+      <div class="card-header">
+        <h3><i class="fas fa-briefcase"></i> Step 3 of 8 — Job Preferences</h3>
+        <p>Tell us about the role you are applying for and your work preferences.</p>
+      </div>
+      <div class="card-body">
+        <div class="instr">
+          <strong><i class="fas fa-lightbulb"></i> Tip</strong>
+          Be specific about the job title — employers prefer candidates who apply for a clear role rather than a general position. If you have a specific job in mind, enter it here.
+        </div>
+        <div class="row">
+          <div class="fg">
+            <label for="jobTitle">Position Applying For <span class="req">*</span></label>
+            <input id="jobTitle" class="fc" type="text" placeholder="Select a job from the job listing" readonly>
+          </div>
+          <div class="fg">
+            <label for="jobLocation">Job Location</label>
+            <input id="jobLocation" class="fc" type="text" placeholder="Location provided by the employer" readonly>
+          </div>
+        </div>
+        <div class="fg">
+          <label>Preferred Industry (tick all that apply)</label>
+          <div class="ind-grid">
+            <label class="ind-chk"><input type="checkbox" name="industry" value="Construction"> Construction</label>
+            <label class="ind-chk"><input type="checkbox" name="industry" value="Hospitality"> Hospitality</label>
+            <label class="ind-chk"><input type="checkbox" name="industry" value="Security"> Security</label>
+            <label class="ind-chk"><input type="checkbox" name="industry" value="Driving"> Driving / Transport</label>
+            <label class="ind-chk"><input type="checkbox" name="industry" value="Healthcare"> Healthcare</label>
+            <label class="ind-chk"><input type="checkbox" name="industry" value="IT / Technology"> IT / Technology</label>
+            <label class="ind-chk"><input type="checkbox" name="industry" value="Engineering"> Engineering</label>
+            <label class="ind-chk"><input type="checkbox" name="industry" value="Sales"> Sales</label>
+            <label class="ind-chk"><input type="checkbox" name="industry" value="Cleaning"> Cleaning</label>
+            <label class="ind-chk"><input type="checkbox" name="industry" value="Domestic Work"> Domestic Work</label>
+            <label class="ind-chk"><input type="checkbox" name="industry" value="Warehouse"> Warehouse / Logistics</label>
+            <label class="ind-chk"><input type="checkbox" name="industry" value="Catering"> Catering</label>
+          </div>
+        </div>
+        <div class="row three">
+          <div class="fg">
+            <label for="expectedSalary">Employer Salary (QAR/month)</label>
+            <input id="expectedSalary" class="fc" type="text" placeholder="Salary provided by the employer" readonly>
+            <div class="hint">This value comes from the selected employer job listing.</div>
+          </div>
+          <div class="fg">
+            <label for="startDate">Available Start Date</label>
+            <input id="startDate" class="fc" type="date">
+          </div>
+          <div class="fg">
+            <label for="experience">Total Years of Experience</label>
+            <select id="experience" class="fc">
+              <option>No experience</option>
+              <option>Less than 1 year</option>
+              <option>1–2 years</option>
+              <option>3–5 years</option>
+              <option>5–10 years</option>
+              <option>10+ years</option>
+            </select>
+          </div>
+        </div>
+        <div id="err3" class="err-msg"><i class="fas fa-exclamation-circle"></i><span></span></div>
+        <div class="nav-row">
+          <button class="btn btn-prev" onclick="prevStep(3)"><i class="fas fa-arrow-left"></i><span>Previous</span></button>
+          <span class="step-counter">Step 3 of 8</span>
+          <button class="btn btn-next" onclick="nextStep(3)"><span>Next</span><i class="fas fa-arrow-right"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== STEP 4: EDUCATION & WORK ===== -->
+    <div class="step-panel" data-panel="4" style="display:none">
+      <div class="card-header">
+        <h3><i class="fas fa-graduation-cap"></i> Step 4 of 8 — Education &amp; Work Experience</h3>
+        <p>Your educational background and previous work history.</p>
+      </div>
+      <div class="card-body">
+        <div class="instr">
+          <strong><i class="fas fa-graduation-cap"></i> Education</strong>
+          Enter your highest educational qualification. For blue-collar and domestic roles, a certificate or secondary school education is often sufficient.
+        </div>
+        <div class="row">
+          <div class="fg">
+            <label for="education">Highest Qualification</label>
+            <select id="education" class="fc">
+              <option>No formal education</option>
+              <option>Primary School</option>
+              <option>Secondary / High School</option>
+              <option>Certificate / Diploma</option>
+              <option>Bachelor's Degree</option>
+              <option>Master's Degree</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label for="schoolName">School / College / University Name</label>
+            <input id="schoolName" class="fc" type="text" placeholder="Name of institution">
+          </div>
+        </div>
+        <div class="row">
+          <div class="fg">
+            <label for="graduationYear">Year of Graduation / Completion</label>
+            <input id="graduationYear" class="fc" type="number" placeholder="e.g. 2018" min="1970" max="2030">
+          </div>
+          <div class="fg">
+            <label for="fieldOfStudy">Field of Study / Major</label>
+            <input id="fieldOfStudy" class="fc" type="text" placeholder="e.g. Mechanical Engineering, Nursing, Business">
+          </div>
+        </div>
+        <hr style="border:none;border-top:2px solid #f0f2f5;margin:20px 0">
+        <div class="instr">
+          <strong><i class="fas fa-hard-hat"></i> Work Experience</strong>
+          List your most relevant experience. Even informal work counts — household work, farm labour, construction, driving. Employers want to know what you have done before.
+        </div>
+        <div class="row">
+          <div class="fg">
+            <label for="currentEmployer">Current or Most Recent Employer</label>
+            <input id="currentEmployer" class="fc" type="text" placeholder="Company or household name, or 'Self-employed'">
+          </div>
+          <div class="fg">
+            <label for="currentJobTitle">Your Job Title There</label>
+            <input id="currentJobTitle" class="fc" type="text" placeholder="e.g. Driver, Cook, Security Officer">
+          </div>
+        </div>
+        <div class="row">
+          <div class="fg">
+            <label for="employmentPeriod">Period of Employment</label>
+            <input id="employmentPeriod" class="fc" type="text" placeholder="e.g. Jan 2020 – Dec 2023">
+          </div>
+          <div class="fg">
+            <label for="currentCountry">Country of Employment</label>
+            <input id="currentCountry" class="fc" type="text" placeholder="Country where you worked">
+          </div>
+        </div>
+        <div class="fg">
+          <label for="previousEmployers">Previous Employers (list all relevant)</label>
+          <textarea id="previousEmployers" class="fc" placeholder="Example:&#10;1. ABC Logistics – Truck Driver – Kenya – 2017 to 2020&#10;2. XYZ Household – House Keeper – UAE – 2020 to 2022"></textarea>
+        </div>
+        <div id="err4" class="err-msg"><i class="fas fa-exclamation-circle"></i><span></span></div>
+        <div class="nav-row">
+          <button class="btn btn-prev" onclick="prevStep(4)"><i class="fas fa-arrow-left"></i><span>Previous</span></button>
+          <span class="step-counter">Step 4 of 8</span>
+          <button class="btn btn-next" onclick="nextStep(4)"><span>Next</span><i class="fas fa-arrow-right"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== STEP 5: SKILLS ===== -->
+    <div class="step-panel" data-panel="5" style="display:none">
+      <div class="card-header">
+        <h3><i class="fas fa-star"></i> Step 5 of 8 — Skills &amp; Abilities</h3>
+        <p>Your languages, technical skills, licences, and any additional information.</p>
+      </div>
+      <div class="card-body">
+        <div class="instr">
+          <strong><i class="fas fa-star"></i> Skills Matter</strong>
+          Even if you have limited formal experience, your skills are valuable. Be honest and specific — if you can drive a truck, weld, cook, or speak multiple languages, say so clearly.
+        </div>
+        <div class="row">
+          <div class="fg">
+            <label for="languages">Languages Spoken</label>
+            <input id="languages" class="fc" type="text" placeholder="e.g. English (Fluent), Arabic (Basic), Swahili (Native)">
+            <div class="hint">Include your level — Native, Fluent, Conversational, Basic</div>
+          </div>
+          <div class="fg">
+            <label for="englishLevel">English Proficiency</label>
+            <select id="englishLevel" class="fc">
+              <option>Native speaker</option>
+              <option>Fluent</option>
+              <option>Conversational</option>
+              <option>Basic</option>
+              <option>None</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="fg">
+            <label for="drivingLicence">Driving Licence</label>
+            <select id="drivingLicence" class="fc">
+              <option value="None">None</option>
+              <option>Light vehicle (car / van)</option>
+              <option>Heavy / Truck (HGV)</option>
+              <option>Motorbike / Delivery</option>
+              <option>Bus / PSV</option>
+              <option>Forklift</option>
+              <option>Multiple categories</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label for="drivingYears">Years of Driving Experience</label>
+            <select id="drivingYears" class="fc">
+              <option value="N/A">N/A — No licence</option>
+              <option>Less than 1 year</option>
+              <option>1–3 years</option>
+              <option>3–5 years</option>
+              <option>5–10 years</option>
+              <option>10+ years</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="fg">
+            <label for="professionalCerts">Professional Certifications / Licences</label>
+            <input id="professionalCerts" class="fc" type="text" placeholder="e.g. Nursing licence, Security licence, First Aid, Forklift cert">
+          </div>
+        </div>
+        <div class="fg">
+          <label for="tradeSkills">Trade &amp; Technical Skills</label>
+          <input id="tradeSkills" class="fc" type="text" placeholder="e.g. Welding, Plumbing, Electrical, Tiling, Painting, Cooking, Laundry, Childcare">
+        </div>
+        <div class="fg">
+          <label for="message">Anything Else You Would Like the Employer to Know</label>
+          <textarea id="message" class="fc" placeholder="E.g. physical fitness level, references available, why you want to work in Qatar, any special achievement or award, notable personal quality..."></textarea>
+        </div>
+        <div id="err5" class="err-msg"><i class="fas fa-exclamation-circle"></i><span></span></div>
+        <div class="nav-row">
+          <button class="btn btn-prev" onclick="prevStep(5)"><i class="fas fa-arrow-left"></i><span>Previous</span></button>
+          <span class="step-counter">Step 5 of 8</span>
+          <button class="btn btn-next" onclick="nextStep(5)"><span>Next</span><i class="fas fa-arrow-right"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== STEP 7: DOCUMENTS ===== -->
+    <div class="step-panel" data-panel="7" style="display:none">
+      <div class="card-header">
+        <h3><i class="fas fa-folder-open"></i> Step 7 of 8 — Document Uploads</h3>
+        <p>Upload your supporting documents. Required documents must be attached.</p>
+      </div>
+      <div class="card-body">
+        <div class="instr">
+          <strong><i class="fas fa-info-circle"></i> Document Upload Instructions</strong>
+          <ul>
+            <li>Upload clear, readable scans or photos of your documents.</li>
+            <li>Accepted formats: <strong>PDF, JPG, JPEG, PNG</strong> — max 5 MB per file.</li>
+            <li>If you cannot upload now, you may send documents later via email or WhatsApp to our team.</li>
+            <li>All documents are kept strictly confidential.</li>
+          </ul>
+        </div>
+        <div class="instr instr-warn">
+          <strong><i class="fas fa-clock"></i> Documents NOT Required at This Stage</strong>
+          Do <strong>not</strong> worry about these — they are requested later by the employer or during visa processing:
+          Medical certificate &nbsp;·&nbsp; Police clearance &nbsp;·&nbsp; Visa copy &nbsp;·&nbsp; Qatar ID &nbsp;·&nbsp; Flight ticket &nbsp;·&nbsp; Employment contract.
+        </div>
+
+        <!-- Required documents -->
+        <div class="doc-section">
+          <h4><i class="fas fa-exclamation-circle" style="color:#991b1b"></i> Required Documents — Must Upload</h4>
+          <div class="upload-cards">
+            <div class="uc" id="uc-passport">
+              <input type="file" id="doc-passport" accept=".pdf,.jpg,.jpeg,.png" onchange="handleUpload('passport',this)">
+              <div class="uc-inner">
+                <div class="uc-icon"><i class="fas fa-passport"></i></div>
+                <div class="uc-label"><i class="fas fa-file-lines"></i> Passport Copy</div>
+                <span class="uc-tag tag-required">REQUIRED</span>
+                <div class="uc-hint">Bio-data page · Must be valid 6+ months</div>
+                <div class="uc-filename" id="fn-passport"></div>
+                <div class="uc-preview" id="preview-passport"></div>
+                <div class="uc-preview" id="preview-passport"></div>
+              </div>
+            </div>
+            <div class="uc" id="uc-photo">
+              <input type="file" id="doc-photo" accept=".jpg,.jpeg,.png" onchange="handleUpload('photo',this)">
+              <div class="uc-inner">
+                <div class="uc-icon"><i class="fas fa-user-circle"></i></div>
+                <div class="uc-label"><i class="fas fa-image"></i> Passport-Size Photo</div>
+                <span class="uc-tag tag-required">REQUIRED</span>
+                <div class="uc-hint">Recent · White background · Clear face</div>
+                <div class="uc-filename" id="fn-photo"></div>
+                <div class="uc-preview" id="preview-photo"></div>
+                <div class="uc-preview" id="preview-photo"></div>
+              </div>
+            </div>
+            <div class="uc" id="uc-cv">
+              <input type="file" id="doc-cv" accept=".pdf,.doc,.docx" onchange="handleUpload('cv',this)">
+              <div class="uc-inner">
+                <div class="uc-icon"><i class="fas fa-file-alt"></i></div>
+                <div class="uc-label"><i class="fas fa-file-lines"></i> CV / Resume</div>
+                <span class="uc-tag tag-required">REQUIRED</span>
+                <div class="uc-hint">PDF or Word · Updated with recent experience</div>
+                <div class="uc-filename" id="fn-cv"></div>
+                <div class="uc-preview" id="preview-cv"></div>
+                <div class="uc-preview" id="preview-cv"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="instr" style="margin-top:4px;">
+          <strong><i class="fas fa-paperclip"></i> Stapling Instruction — For Printed Applications</strong>
+          When printing and submitting this application in physical form, staple documents in this order:
+          <ol style="padding-left:18px;margin-top:6px;">
+            <li>Application form (this document)</li>
+            <li>Passport copy (bio-data page)</li>
+            <li>Passport-size photo (attach with paper clip to top-right corner)</li>
+            <li>CV / Resume</li>
+            <li>Educational certificate(s)</li>
+            <li>Experience certificate(s)</li>
+            <li>Professional licence (if applicable)</li>
+          </ol>
+        </div>
+
+        <div id="err7" class="err-msg"><i class="fas fa-exclamation-circle"></i><span></span></div>
+        <div class="nav-row">
+          <button class="btn btn-prev" onclick="prevStep(7)"><i class="fas fa-arrow-left"></i><span>Previous</span></button>
+          <span class="step-counter">Step 7 of 8</span>
+          <button class="btn btn-next" onclick="nextStep(7)"><span>Next</span><i class="fas fa-arrow-right"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== STEP 6: EMERGENCY CONTACT ===== -->
+    <div class="step-panel" data-panel="6" style="display:none">
+      <div class="card-header">
+        <h3><i class="fas fa-phone-alt"></i> Step 6 of 8 — Emergency Contact</h3>
+        <p>A contact person in your home country who can be reached if needed.</p>
+      </div>
+      <div class="card-body">
+        <div class="instr">
+          <strong><i class="fas fa-phone-alt"></i> Why We Need This</strong>
+          In Qatar, your employer and the Ministry of Interior require an emergency contact from your home country. This person will be contacted only in case of a medical or personal emergency. They do not need to do anything at this stage.
+        </div>
+        <div class="row">
+          <div class="fg">
+            <label for="emergencyName">Emergency Contact Full Name <span class="req">*</span></label>
+            <input id="emergencyName" class="fc" type="text" placeholder="Full name">
+          </div>
+          <div class="fg">
+            <label for="emergencyRelationship">Relationship to You <span class="req">*</span></label>
+            <select id="emergencyRelationship" class="fc">
+              <option value="">Select relationship</option>
+              <option>Spouse / Partner</option>
+              <option>Parent (Mother/Father)</option>
+              <option>Sibling (Brother/Sister)</option>
+              <option>Child</option>
+              <option>Relative</option>
+              <option>Friend</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="fg">
+            <label for="emergencyPhone">Phone Number (with country code)</label>
+            <input id="emergencyPhone" class="fc" type="tel" placeholder="+260 7XX XXX XXX">
+          </div>
+          <div class="fg">
+            <label for="emergencyCountry">Country</label>
+            <input id="emergencyCountry" class="fc" type="text" placeholder="Country of emergency contact">
+          </div>
+        </div>
+        <div class="fg">
+          <label for="emergencyAddress">Physical Address</label>
+          <input id="emergencyAddress" class="fc" type="text" placeholder="Town / Area, Region, Country">
+        </div>
+        <div id="err6" class="err-msg"><i class="fas fa-exclamation-circle"></i><span></span></div>
+        <div class="nav-row">
+          <button class="btn btn-prev" onclick="prevStep(6)"><i class="fas fa-arrow-left"></i><span>Previous</span></button>
+          <span class="step-counter">Step 6 of 8</span>
+          <button class="btn btn-next" onclick="nextStep(6)"><span>Next</span><i class="fas fa-arrow-right"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== STEP 8: REVIEW & SUBMIT ===== -->
+    <div class="step-panel" data-panel="8" style="display:none">
+      <div class="card-header">
+        <h3><i class="fas fa-check-double"></i> Step 8 of 8 — Review &amp; Submit</h3>
+        <p>Review your application summary, read the declaration, then submit.</p>
+      </div>
+      <div class="card-body">
+        <div class="instr">
+          <strong><i class="fas fa-eye"></i> Please Review Carefully</strong>
+          Check your details below before submitting. After submission you will receive a reference number. Use it to track your application status on the <a href="dashboard.html" style="color:#0d4a8a;font-weight:600;">Dashboard</a>.
+        </div>
+
+        <!-- Application summary table -->
+        <div id="reviewSummary" style="margin-bottom:24px;font-size:.88rem;"></div>
+
+        <hr style="border:none;border-top:2px solid #f0f2f5;margin:22px 0">
+
+        <!-- Declaration -->
+        <div style="margin-bottom:18px;">
+          <p style="font-weight:700;color:#0d4a8a;margin-bottom:12px;">Declaration — Please tick all boxes:</p>
+          <label class="decl">
+            <input type="checkbox" id="decl1">
+            I confirm that all information I have provided in this application is true, correct, and complete to the best of my knowledge. I understand that false or misleading information may result in the cancellation of my application or employment.
+          </label>
+          <label class="decl">
+            <input type="checkbox" id="decl3">
+            I agree that FindAJob.qa and the prospective employer may retain my application and documents for the purpose of recruitment. I consent to being contacted by phone, WhatsApp, or email.
+          </label>
+        </div>
+
+        <div id="err8" class="err-msg"><i class="fas fa-exclamation-circle"></i><span></span></div>
+
+        <div class="nav-row">
+          <button class="btn btn-prev" onclick="prevStep(8)"><i class="fas fa-arrow-left"></i><span>Previous</span></button>
+          <span class="step-counter">Step 8 of 8</span>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;">
+            <button class="btn btn-pdf-outline" onclick="downloadPDF()"><i class="fas fa-file-pdf"></i> Download PDF</button>
+            <button class="btn btn-submit" onclick="submitApplication()"><i class="fas fa-paper-plane"></i> Submit Application</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SUCCESS SCREEN ===== -->
+    <div id="successScreen">
+      <div class="success-icon"><i class="fas fa-check-circle"></i></div>
+      <h2>Application Submitted!</h2>
+      <p>Your application has been received by our recruitment team. We will review it within <strong>1–3 business days</strong> and contact you on the WhatsApp number you provided.</p>
+      <div class="ref-badge">
+        <i class="fas fa-id-badge"></i>
+        Reference Number: <strong id="refDisplay"></strong>
+      </div>
+      <div class="next-steps">
+        <h4>What happens next?</h4>
+        <ul style="list-style:none;">
+          <li><i class="fas fa-search"></i>Our team reviews your application and documents</li>
+          <li><i class="fas fa-user-tie"></i>Matching employers receive your profile</li>
+          <li><i class="fas fa-phone"></i>You are contacted for an interview (by phone or video)</li>
+          <li><i class="fas fa-handshake"></i>A job offer is made — employer covers visa costs</li>
+          <li><i class="fas fa-plane"></i>Visa is processed and you travel to Qatar</li>
+        </ul>
+      </div>
+      <div class="success-btns">
+        <button class="btn btn-pdf" onclick="downloadPDF()"><i class="fas fa-file-pdf"></i> Download PDF Copy</button>
+        <a href="dashboard.html" class="btn btn-submit"><i class="fas fa-tasks"></i> Track My Application</a>
+        <a href="index.html" class="btn btn-prev"><i class="fas fa-home"></i> Back to Jobs</a>
+      </div>
+    </div>
+
+  </div><!-- /form-card -->
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="foot">
+    <div>
+      <h3>FindAJob.qa</h3>
+      <p style="color:#bbb;font-size:.85rem;">Qatar jobs for drivers, labourers, domestic workers &amp; more.</p>
+    </div>
+    <div>
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html#search-container">Search Jobs</a></li>
+        <li><a href="dashboard.html">My Application</a></li>
+        <li><a href="career-advice.html">Career Advice</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3>Legal</h3>
+      <ul>
+        <li><a href="privacy-policy.html">Privacy Policy</a></li>
+        <li><a href="terms-of-service.html">Terms of Service</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3>Contact</h3>
+      <div class="public-contact-links">
+        <a id="footer-call-link" href="tel:+97412345678"><i class="fas fa-phone"></i> <span id="footer-call-number">Call us</span></a>
+        <a id="footer-whatsapp-link" href="https://wa.me/97412345678" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> <span id="footer-whatsapp-number">WhatsApp</span></a>
+      </div>
+    </div>
+  </div>
+  <div class="copy">&copy; 2026 FindAJob.qa. All rights reserved.</div>
+</footer>
+
+<a id="whatsapp-floating" class="whatsapp-float" href="#" target="_blank" rel="noopener" aria-label="Chat with us on WhatsApp">
+  <i class="fab fa-whatsapp whatsapp-float-icon"></i>
+  <span class="whatsapp-float-copy">
+    <strong>Chat with us on WhatsApp</strong>
+    <span id="whatsapp-floating-message">Send us a message instantly.</span>
+  </span>
+  <button id="whatsapp-floating-close" class="whatsapp-float-close" type="button" aria-label="Close WhatsApp message"><i class="fas fa-times"></i></button>
+</a>
+
+<script>
+/* ============================================================
+   STATE
+   ============================================================ */
+const TOTAL_STEPS = 8;
+const STORE_KEY = 'fjq_app_draft';
+let currentStep = 1;
+// In-memory file store — names are saved for review and File objects are sent on submit.
+const uploadedFiles = {};
+const uploadedFileObjects = {};
+let hasSavedDraft = false;
+
+/* ============================================================
+   FIELD REGISTRY  (id → label)
+   ============================================================ */
+const FIELDS = {
+  fullName:'Full Name', gender:'Gender', dob:'Date of Birth', nationality:'Nationality',
+  maritalStatus:'Marital Status', religion:'Religion', countryOfResidence:'Country of Residence',
+  currentAddress:'Current Town/City', phone:'WhatsApp Phone', email:'Email',
+  passportNumber:'Passport Number', passportExpiry:'Passport Expiry',
+  jobTitle:'Position Applying For', jobLocation:'Preferred Location',
+  expectedSalary:'Expected Salary', startDate:'Available Date', experience:'Years of Experience',
+  education:'Highest Qualification', schoolName:'School/College', graduationYear:'Graduation Year',
+  fieldOfStudy:'Field of Study', currentEmployer:'Current Employer', currentJobTitle:'Current Job Title',
+  employmentPeriod:'Employment Period', currentCountry:'Country of Employment',
+  previousEmployers:'Previous Employers',
+  languages:'Languages Spoken', englishLevel:'English Level', drivingLicence:'Driving Licence',
+  drivingYears:'Driving Experience',
+  professionalCerts:'Professional Certs', tradeSkills:'Trade Skills', message:'Additional Info',
+  emergencyName:'Emergency Contact Name', emergencyRelationship:'Relationship',
+  emergencyPhone:'Emergency Phone', emergencyCountry:'Country', emergencyAddress:'Address'
+};
+
+/* ============================================================
+   SAVE / LOAD
+   ============================================================ */
+function save() {
+  const data = {};
+  Object.keys(FIELDS).forEach(id => {
+    const el = document.getElementById(id);
+    if (el) data[id] = id === 'fullName' ? el.value.toUpperCase() : el.value;
+  });
+  // Radios
+  ['hasPassport','workedQatar','deniedVisa','hasQatarVisa'].forEach(name => {
+    const el = document.querySelector(`input[name="${name}"]:checked`);
+    data[name] = el ? el.value : '';
+  });
+  // Checkboxes (industry)
+  data['industry'] = [...document.querySelectorAll('input[name="industry"]:checked')].map(c => c.value);
+  data.currentStep = currentStep;
+  try { localStorage.setItem(STORE_KEY, JSON.stringify(data)); } catch(e){}
+}
+
+function load() {
+  let data;
+  try { data = JSON.parse(localStorage.getItem(STORE_KEY) || '{}'); } catch(e){ data = {}; }
+  hasSavedDraft = Object.keys(data).some(key => FIELDS[key] && String(data[key] || '').trim());
+  Object.keys(FIELDS).forEach(id => {
+    const el = document.getElementById(id);
+    if (el && data[id] !== undefined) el.value = data[id];
+  });
+  ['hasPassport','workedQatar','deniedVisa','hasQatarVisa'].forEach(name => {
+    if (data[name]) {
+      const el = document.querySelector(`input[name="${name}"][value="${data[name]}"]`);
+      if (el) el.checked = true;
+    }
+  });
+  if (Array.isArray(data['industry'])) {
+    document.querySelectorAll('input[name="industry"]').forEach(chk => {
+      chk.checked = data['industry'].includes(chk.value);
+    });
+  }
+  // Always apply the selected employer job from the URL.
+  const p = new URLSearchParams(window.location.search);
+  [['jobTitle','title'],['jobLocation','location'],['expectedSalary','salary']].forEach(([id,key]) => {
+    const el = document.getElementById(id);
+    if (el && p.get(key)) el.value = p.get(key);
+  });
+  if (p.get('category')) {
+    document.querySelectorAll('input[name="industry"]').forEach(chk => {
+      chk.checked = chk.value.toLowerCase().includes(p.get('category').toLowerCase()) ||
+        p.get('category').toLowerCase().includes(chk.value.toLowerCase());
+    });
+  }
+  if (data.currentStep) currentStep = Math.min(TOTAL_STEPS, Math.max(1, Number(data.currentStep)));
+  return hasSavedDraft;
+}
+
+// Auto-save on any change
+document.addEventListener('change', save);
+document.addEventListener('input', save);
+document.addEventListener('input', function(event) {
+  if (event.target && event.target.id === 'fullName') {
+    event.target.value = event.target.value.toUpperCase();
+    save();
+  }
+});
+
+/* ============================================================
+   FILE UPLOAD HANDLER
+   ============================================================ */
+function handleUpload(key, input) {
+  const box = document.getElementById('uc-' + key);
+  const fn  = document.getElementById('fn-' + key);
+  if (input.files && input.files.length > 0) {
+    uploadedFileObjects[key] = [...input.files];
+    uploadedFiles[key] = [...input.files].map(f => f.name);
+    box.classList.add('has-file');
+    const names = uploadedFiles[key].join(', ');
+    fn.textContent = 'Uploaded: ' + names;
+    box.querySelector('.uc-tag').className = 'uc-tag tag-done';
+    box.querySelector('.uc-tag').textContent = 'UPLOADED';
+    const preview = document.getElementById('preview-' + key);
+    if (preview) {
+      preview.innerHTML = '';
+      uploadedFileObjects[key].forEach(file => {
+        if (file.type.startsWith('image/')) {
+          const image = document.createElement('img');
+          image.alt = file.name;
+          image.src = URL.createObjectURL(file);
+          preview.appendChild(image);
+        } else {
+          const link = document.createElement('a');
+          link.href = URL.createObjectURL(file);
+          link.target = '_blank';
+          link.rel = 'noopener';
+          link.textContent = 'Preview ' + file.name;
+          preview.appendChild(link);
+        }
+      });
+    }
+  }
+}
+
+/* ============================================================
+   VALIDATION PER STEP
+   ============================================================ */
+function showErr(step, msg) {
+  const el = document.getElementById('err' + step);
+  if (!el) return;
+  el.querySelector('span').textContent = msg;
+  el.style.display = 'flex';
+  el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+function clearErr(step) {
+  const el = document.getElementById('err' + step);
+  if (el) el.style.display = 'none';
+}
+function val(id) {
+  const el = document.getElementById(id);
+  return el ? el.value.trim() : '';
+}
+function mark(id, invalid) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  if (invalid) el.classList.add('invalid'); else el.classList.remove('invalid');
+}
+
+function validate(step) {
+  clearErr(step);
+  if (step === 1) {
+    if (!val('fullName'))  { mark('fullName',true);  showErr(1,'Please enter your full name as it appears in your passport.'); return false; }
+    if (!val('gender'))    { mark('gender',true);    showErr(1,'Please select your gender.'); return false; }
+    if (!val('dob'))       { mark('dob',true);       showErr(1,'Please enter your date of birth.'); return false; }
+    const dob = new Date(val('dob') + 'T00:00:00');
+    const today = new Date();
+    let age = today.getFullYear() - dob.getFullYear();
+    const monthDelta = today.getMonth() - dob.getMonth();
+    if (monthDelta < 0 || (monthDelta === 0 && today.getDate() < dob.getDate())) age--;
+    if (isNaN(dob.getTime()) || age < 21) {
+      mark('dob',true);
+      showErr(1,'You must be 21 years or older to apply for this position.');
+      return false;
+    }
+    if (!val('nationality')){ mark('nationality',true); showErr(1,'Please enter your nationality.'); return false; }
+    if (!val('countryOfResidence')){ mark('countryOfResidence',true); showErr(1,'Please enter your country of residence.'); return false; }
+    if (!val('currentAddress')){ mark('currentAddress',true); showErr(1,'Please enter your current town or city.'); return false; }
+    if (!val('phone'))     { mark('phone',true);     showErr(1,'Please enter your WhatsApp phone number including country code.'); return false; }
+    ['fullName','gender','dob','nationality','countryOfResidence','currentAddress','phone'].forEach(id => mark(id, false));
+  }
+  if (step === 2) {
+    if (!val('passportNumber')) { mark('passportNumber',true); showErr(2,'Please enter your passport number.'); return false; }
+    if (!val('passportExpiry')) { mark('passportExpiry',true); showErr(2,'Please enter your passport expiry date.'); return false; }
+    // Warn if expiry is < 6 months away
+    const exp = new Date(val('passportExpiry'));
+    const sixMonths = new Date(); sixMonths.setMonth(sixMonths.getMonth()+6);
+    if (!isNaN(exp) && exp < sixMonths) {
+      showErr(2,'Your passport expires in less than 6 months. You may need to renew it before your Qatar visa is issued. Please update your passport and reapply.');
+      // Don't block — just warn
+    }
+    ['passportNumber','passportExpiry'].forEach(id => mark(id, false));
+  }
+  if (step === 3) {
+    if (!val('jobTitle')) { mark('jobTitle',true); showErr(3,'Please return to the job listings and select an available employer job before applying.'); return false; }
+    mark('jobTitle', false);
+  }
+  if (step === 6) {
+    if (!val('emergencyName')) { mark('emergencyName',true); showErr(6,'Please enter your emergency contact\'s full name.'); return false; }
+    if (!val('emergencyRelationship')) { mark('emergencyRelationship',true); showErr(6,'Please select your relationship to the emergency contact.'); return false; }
+    ['emergencyName','emergencyRelationship'].forEach(id => mark(id, false));
+  }
+  if (step === 7) {
+    if (!uploadedFiles['passport']) { showErr(7,'Please upload a copy of your passport (bio-data page). This is required.'); return false; }
+    if (!uploadedFiles['photo'])    { showErr(7,'Please upload your passport-size photo. This is required.'); return false; }
+    if (!uploadedFiles['cv'])       { showErr(7,'Please upload your CV / Resume. This is required.'); return false; }
+  }
+  if (step === 8) {
+    if (!document.getElementById('decl1').checked) { showErr(8,'Please tick the accuracy declaration.'); return false; }
+    if (!document.getElementById('decl3').checked) { showErr(8,'Please tick the consent declaration.'); return false; }
+  }
+  return true;
+}
+
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
+function showPanel(n) {
+  document.querySelectorAll('.step-panel').forEach(p => p.style.display = 'none');
+  const panel = document.querySelector(`.step-panel[data-panel="${n}"]`);
+  if (panel) panel.style.display = '';
+  // Stepper
+  document.querySelectorAll('.step-item').forEach(item => {
+    const s = parseInt(item.dataset.step);
+    item.classList.remove('active','done');
+    if (s < n) item.classList.add('done');
+    if (s === n) item.classList.add('active');
+  });
+  // Progress bar
+  document.getElementById('progressBar').style.width = ((n-1)/(TOTAL_STEPS-1)*100) + '%';
+  // If step 8, build summary
+  if (n === 8) buildSummary();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function nextStep(from) {
+  if (from === 1 && emailCheckState === 'checking') {
+    showErr(1, 'Please wait while we check your email.');
+    return;
+  }
+  if (from === 1 && emailCheckState === 'exists') return;
+  if (!validate(from)) return;
+  save();
+  currentStep = from + 1;
+  showPanel(currentStep);
+}
+
+function prevStep(from) {
+  currentStep = from - 1;
+  showPanel(currentStep);
+}
+
+function resumeApplication() {
+  document.getElementById('resumeModal').classList.remove('open');
+  showPanel(currentStep);
+}
+
+function startNewApplication() {
+  try { localStorage.removeItem(STORE_KEY); } catch (e) {}
+  window.location.reload();
+}
+
+/* ============================================================
+   REVIEW SUMMARY
+   ============================================================ */
+function buildSummary() {
+  function radio(name) {
+    const el = document.querySelector(`input[name="${name}"]:checked`);
+    return el ? el.value : '—';
+  }
+  function industries() {
+    const chks = [...document.querySelectorAll('input[name="industry"]:checked')];
+    return chks.length ? chks.map(c => c.value).join(', ') : 'Not specified';
+  }
+  const sections = [
+    { title: 'Personal Information', rows: [
+      ['Full Name', val('fullName')],['Gender', val('gender')],['Date of Birth', val('dob')],
+      ['Nationality', val('nationality')],['Marital Status', val('maritalStatus')||'—'],
+      ['Country of Residence', val('countryOfResidence')],['Town / City', val('currentAddress')],
+      ['WhatsApp', val('phone')],['Email', val('email')||'—']
+    ]},
+    { title: 'Passport & Visa', rows: [
+      ['Passport Number', val('passportNumber')],['Expiry Date', val('passportExpiry')],
+      ['Valid Passport', radio('hasPassport')],['Worked in Qatar', radio('workedQatar')],
+      ['Denied Qatar Visa', radio('deniedVisa')]
+    ]},
+    { title: 'Job Preferences', rows: [
+      ['Position', val('jobTitle')],['Location', val('jobLocation')],
+      ['Expected Salary', val('expectedSalary')||'Negotiable'],
+      ['Available From', val('startDate')||'ASAP'],['Experience', val('experience')],
+      ['Industries', industries()]
+    ]},
+    { title: 'Education & Work', rows: [
+      ['Qualification', val('education')],['School/College', val('schoolName')||'—'],
+      ['Graduation Year', val('graduationYear')||'—'],
+      ['Current Employer', val('currentEmployer')||'—'],['Job Title', val('currentJobTitle')||'—'],
+      ['Employment Period', val('employmentPeriod')||'—']
+    ]},
+    { title: 'Skills', rows: [
+      ['Languages', val('languages')||'—'],['English Level', val('englishLevel')],
+      ['Driving Licence', val('drivingLicence')],['Trade Skills', val('tradeSkills')||'—'],
+      ['Certs', val('professionalCerts')||'—']
+    ]},
+    { title: 'Documents', rows: [
+      ['Passport Copy', uploadedFiles['passport'] ? 'Uploaded: '+uploadedFiles['passport'].join(', ') : 'Not uploaded'],
+      ['Passport Photo', uploadedFiles['photo']   ? 'Uploaded: '+uploadedFiles['photo'].join(', ') : 'Not uploaded'],
+      ['CV / Resume',   uploadedFiles['cv']       ? 'Uploaded: '+uploadedFiles['cv'].join(', ') : 'Not uploaded']
+    ]},
+    { title: 'Emergency Contact', rows: [
+      ['Name', val('emergencyName')],['Relationship', val('emergencyRelationship')||'—'],
+      ['Phone', val('emergencyPhone')||'—'],['Country', val('emergencyCountry')||'—']
+    ]}
+  ];
+
+  let html = '<div style="border:2px solid #e2e8f0;border-radius:12px;overflow:hidden;">';
+  sections.forEach((sec, si) => {
+    html += `<div style="background:${si%2===0?'#f8fafc':'#fff'};">`;
+    html += `<div style="background:linear-gradient(to right,#0d4a8a,#1a6fc4);color:#fff;padding:10px 18px;font-family:Montserrat,sans-serif;font-size:.9rem;font-weight:700;">${sec.title}</div>`;
+    sec.rows.forEach(([label,value]) => {
+      const color = value && value.startsWith('Uploaded:') ? '#166534' : '#333';
+      html += `<div style="display:flex;justify-content:space-between;padding:8px 18px;border-bottom:1px solid #f0f2f5;font-size:.83rem;">
+                 <span style="color:#666;min-width:150px;">${label}</span>
+                 <span style="color:${color};font-weight:500;text-align:right;">${value||'—'}</span>
+               </div>`;
+    });
+    html += '</div>';
+  });
+  html += '</div>';
+  const previews = Object.entries(uploadedFileObjects).flatMap(([key, files]) =>
+    files.map(file => {
+      const url = URL.createObjectURL(file);
+      return file.type.startsWith('image/')
+        ? `<div style="border:1px solid #dbe2ea;border-radius:8px;padding:8px;text-align:center;background:#fff;">
+             <img src="${url}" alt="${file.name}" style="max-width:150px;max-height:120px;display:block;margin:0 auto 6px;border-radius:5px;">
+             <span style="font-size:.75rem;color:#555;word-break:break-word;">${file.name}</span>
+           </div>`
+        : `<a href="${url}" target="_blank" rel="noopener" style="border:1px solid #dbe2ea;border-radius:8px;padding:14px 10px;text-align:center;background:#fff;color:#0d4a8a;font-size:.78rem;font-weight:600;word-break:break-word;">Preview ${file.name}</a>`;
+    })
+  ).join('');
+  html += `<div style="margin-top:18px;padding:14px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;">
+    <strong style="display:block;color:#0d4a8a;margin-bottom:10px;">Document previews</strong>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;">
+      ${previews || '<span style="font-size:.82rem;color:#777;">No document previews available.</span>'}
+    </div>
+  </div>`;
+  document.getElementById('reviewSummary').innerHTML = html;
+}
+
+/* ============================================================
+   API CONFIG
+   ============================================================ */
+const API_URL = 'https://qatar-jobs-server.onrender.com/api';
+let emailCheckState = 'idle';
+let emailCheckRequest = 0;
+
+function contactDigits(value) {
+  return String(value || '').replace(/[^\d]/g, '');
+}
+
+async function loadContactSettings() {
+  try {
+    const response = await fetch(API_URL + '/contact-settings');
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || 'Could not load contact details.');
+    const settings = data.contactSettings || {};
+    const whatsappNumber = String(settings.whatsapp_number || '').trim();
+    const callNumber = String(settings.call_number || '').trim();
+    const whatsappDigits = contactDigits(whatsappNumber);
+    const callDigits = contactDigits(callNumber);
+    const message = String(settings.whatsapp_message || 'Hello, I would like to ask about available jobs in Qatar.').trim();
+    const callLink = document.getElementById('footer-call-link');
+    const callText = document.getElementById('footer-call-number');
+    const whatsappLink = document.getElementById('footer-whatsapp-link');
+    const whatsappText = document.getElementById('footer-whatsapp-number');
+    const floating = document.getElementById('whatsapp-floating');
+    const floatingMessage = document.getElementById('whatsapp-floating-message');
+    if (callDigits) {
+      callLink.href = 'tel:+' + callDigits;
+      callText.textContent = callNumber;
+    } else {
+      callLink.style.display = 'none';
+    }
+    if (whatsappDigits) {
+      whatsappLink.href = 'https://wa.me/' + whatsappDigits + '?text=' + encodeURIComponent(message);
+      whatsappText.textContent = whatsappNumber;
+      floating.href = whatsappLink.href;
+      floatingMessage.textContent = message;
+      floating.classList.add('is-visible');
+    } else {
+      whatsappLink.style.display = 'none';
+    }
+  } catch (error) {
+    console.warn('Contact settings unavailable:', error.message);
+  }
+}
+
+function setupWhatsAppClose() {
+  const close = document.getElementById('whatsapp-floating-close');
+  const floating = document.getElementById('whatsapp-floating');
+  if (!close || !floating) return;
+  close.addEventListener('click', function(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    floating.classList.remove('is-visible');
+  });
+}
+
+function setEmailCheckState(state, message) {
+  emailCheckState = state;
+  const node = document.getElementById('emailCheck');
+  const next = document.querySelector('.step-panel[data-panel="1"] .btn-next');
+  if (node) {
+    node.className = 'email-check ' + state;
+    node.innerHTML = state === 'checking'
+      ? '<i class="fas fa-spinner fa-spin"></i> Checking previous applications…'
+      : state === 'ok'
+        ? '<i class="fas fa-check-circle"></i> Email is available for a new application.'
+        : state === 'exists'
+          ? '<i class="fas fa-exclamation-circle"></i> An application was found. Opening your tracker…'
+          : state === 'error'
+            ? '<i class="fas fa-info-circle"></i> We could not check now. You can try again or continue.'
+            : '';
+  }
+  if (next) {
+    next.disabled = state === 'checking' || state === 'exists';
+    next.style.opacity = next.disabled ? '.55' : '';
+    next.style.cursor = next.disabled ? 'wait' : '';
+  }
+}
+
+/* ============================================================
+   EMAIL CHECK — called on blur of email field
+   ============================================================ */
+async function checkEmailExists(email) {
+  const value = String(email || '').trim().toLowerCase();
+  if (!value || !value.includes('@')) {
+    setEmailCheckState('idle');
+    return false;
+  }
+  const requestId = ++emailCheckRequest;
+  setEmailCheckState('checking');
+  try {
+    const r = await fetch(`${API_URL}/applications/check-email?email=${encodeURIComponent(value)}`);
+    const data = await r.json();
+    if (requestId !== emailCheckRequest) return false;
+    if (data.exists && data.application) {
+      const a = data.application;
+      setEmailCheckState('exists');
+      alert(`We found your previous application (${a.tracking_number}). Opening your tracking page now.`);
+      localStorage.setItem('fjqTrackingNum', a.tracking_number);
+      window.location.href = 'dashboard.html?ref=' + encodeURIComponent(a.tracking_number);
+      return true;
+    }
+    setEmailCheckState('ok');
+    return false;
+  } catch (e) {
+    if (requestId === emailCheckRequest) setEmailCheckState('error');
+    return false;
+  }
+}
+
+/* ============================================================
+   SUBMIT
+   ============================================================ */
+async function submitApplication() {
+  if (!validate(8)) return;
+
+  const submitBtn = document.querySelector('.btn-submit');
+  submitBtn.disabled = true;
+  submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting…';
+
+  // Collect all form data
+  const body = {};
+  Object.keys(FIELDS).forEach(id => {
+    const el = document.getElementById(id);
+    if (el) body[id] = el.value;
+  });
+  // Radio fields
+  ['hasPassport','workedQatar','deniedVisa','hasQatarVisa'].forEach(name => {
+    const el = document.querySelector(`input[name="${name}"]:checked`);
+    body[name] = el ? el.value : '';
+  });
+  // Checkboxes
+  body['industry'] = [...document.querySelectorAll('input[name="industry"]:checked')].map(c => c.value);
+
+  try {
+    const formData = new FormData();
+    Object.entries(body).forEach(([key, value]) => {
+      if (Array.isArray(value)) {
+        value.forEach(item => formData.append(key, item));
+      } else {
+        formData.append(key, value ?? '');
+      }
+    });
+    ['passport', 'photo', 'cv', 'education', 'experience', 'licence'].forEach(key => {
+      const input = document.getElementById('doc-' + key);
+      if (input && input.files) {
+        [...input.files].forEach(file => formData.append('doc-' + key, file));
+      }
+    });
+
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('jobId')) formData.append('jobId', params.get('jobId'));
+    if (params.get('company')) formData.append('companyName', params.get('company'));
+    if (params.get('employerEmail')) formData.append('employerEmail', params.get('employerEmail'));
+
+    const r = await fetch(`${API_URL}/applications`, {
+      method: 'POST',
+      body: formData,
+    });
+    const data = await r.json();
+
+    if (!r.ok) {
+      if (data.alreadyApplied && data.application) {
+        localStorage.setItem('fjqTrackingNum', data.application.tracking_number);
+        window.location.href = 'dashboard.html?ref=' + encodeURIComponent(data.application.tracking_number);
+        return;
+      }
+      showErr(8, data.error || 'Submission failed. Please try again.');
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Application';
+      return;
+    }
+
+    const ref = data.trackingNumber;
+    // Store for dashboard
+    try {
+      localStorage.setItem('fjqTrackingNum', ref);
+      localStorage.setItem('fjqAppRef', ref);
+      localStorage.setItem('fjqAppPos', val('jobTitle'));
+      localStorage.setItem('fjqAppDate', new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'}));
+    } catch(e){}
+
+    // Clear saved draft
+    try { localStorage.removeItem(STORE_KEY); } catch(e){}
+    // The dashboard is the single success and tracking destination.
+    window.location.href = 'dashboard.html?ref=' + encodeURIComponent(ref) + '&submitted=1';
+    return;
+
+  } catch (err) {
+    showErr(8, 'Network error — please check your connection and try again.');
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Application';
+  }
+}
+
+/* ============================================================
+   PDF / PRINT
+   ============================================================ */
+function downloadPDF() {
+  function radio(name) {
+    const el = document.querySelector(`input[name="${name}"]:checked`);
+    return el ? el.value : '—';
+  }
+  function industries() {
+    const chks = [...document.querySelectorAll('input[name="industry"]:checked')];
+    return chks.length ? chks.map(c => c.value).join(', ') : 'Not specified';
+  }
+  const appDate = new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+  const appRef  = localStorage.getItem('fjqAppRef') || '(Not yet submitted)';
+  const name    = val('fullName') || '—';
+
+  const sections = [
+    { title: 'PERSONAL INFORMATION', rows: [
+      ['Full Name (as in passport)', val('fullName')],
+      ['Gender', val('gender')],['Date of Birth', val('dob')],
+      ['Nationality', val('nationality')],
+      ['Marital Status', val('maritalStatus')||'—'],
+      ['Country of Residence', val('countryOfResidence')],
+      ['Town / City', val('currentAddress')],
+      ['WhatsApp Phone', val('phone')],['Email', val('email')||'—']
+    ]},
+    { title: 'PASSPORT & VISA DETAILS', rows: [
+      ['Passport Number', val('passportNumber')],
+      ['Passport Expiry', val('passportExpiry')],
+      ['Valid Passport?', radio('hasPassport')],
+      ['Worked in Qatar Before?', radio('workedQatar')],
+      ['Denied Qatar Visa?', radio('deniedVisa')],
+      ['Holds Qatar Visa?', radio('hasQatarVisa')]
+    ]},
+    { title: 'JOB PREFERENCES', rows: [
+      ['Position Applying For', val('jobTitle')],
+      ['Preferred Location', val('jobLocation')],
+      ['Industries', industries()],
+      ['Expected Salary', val('expectedSalary')||'Negotiable'],
+      ['Available From', val('startDate')||'ASAP'],
+      ['Total Experience', val('experience')]
+    ]},
+    { title: 'EDUCATION', rows: [
+      ['Highest Qualification', val('education')],
+      ['School / College / University', val('schoolName')||'—'],
+      ['Graduation Year', val('graduationYear')||'—'],
+      ['Field of Study', val('fieldOfStudy')||'—']
+    ]},
+    { title: 'WORK EXPERIENCE', rows: [
+      ['Current / Most Recent Employer', val('currentEmployer')||'—'],
+      ['Job Title', val('currentJobTitle')||'—'],
+      ['Employment Period', val('employmentPeriod')||'—'],
+      ['Country', val('currentCountry')||'—'],
+      ['Previous Employers', val('previousEmployers')||'—']
+    ]},
+    { title: 'SKILLS', rows: [
+      ['Languages Spoken', val('languages')||'—'],
+      ['English Level', val('englishLevel')],
+      ['Driving Licence', val('drivingLicence')],
+      ['Driving Experience', val('drivingYears')],
+      ['Professional Certifications', val('professionalCerts')||'—'],
+      ['Trade / Technical Skills', val('tradeSkills')||'—']
+    ]},
+    { title: 'EMERGENCY CONTACT', rows: [
+      ['Full Name', val('emergencyName')],
+      ['Relationship', val('emergencyRelationship')||'—'],
+      ['Phone Number', val('emergencyPhone')||'—'],
+      ['Country', val('emergencyCountry')||'—'],
+      ['Address', val('emergencyAddress')||'—']
+    ]},
+    { title: 'ADDITIONAL INFORMATION', rows: [
+      ['Additional Notes', val('message')||'—']
+    ]}
+  ];
+
+  function sectionHTML(sec) {
+    const rows = sec.rows.map(([lbl,v]) =>
+      `<tr><td style="padding:5px 10px;color:#555;width:38%;border-bottom:1px solid #e0e0e0;">${lbl}</td>
+           <td style="padding:5px 10px;font-weight:600;color:#111;border-bottom:1px solid #e0e0e0;white-space:pre-wrap;">${v||'—'}</td></tr>`
+    ).join('');
+    return `
+      <div style="margin-bottom:18px;page-break-inside:avoid;">
+        <div style="background:#8a1538;color:#fff;padding:8px 14px;font-family:Arial,sans-serif;font-size:10pt;font-weight:700;letter-spacing:.5px;">${sec.title}</div>
+        <table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif;font-size:9.5pt;">${rows}</table>
+      </div>`;
+  }
+
+  const docHTML = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Job Application — ${name} — FindAJob.qa</title>
+  <style>
+    @page { size: A4; margin: 18mm 15mm; }
+    body { font-family: Arial, sans-serif; font-size: 10pt; color: #111; background: #fff; }
+    .page-header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 3px solid #8a1538; padding-bottom: 12px; margin-bottom: 20px; }
+    .ph-brand { }
+    .ph-brand h1 { font-size: 16pt; color: #8a1538; font-weight: 900; margin: 0; }
+    .ph-brand p { font-size: 9pt; color: #666; margin: 2px 0 0; }
+    .ph-meta { text-align: right; font-size: 8.5pt; color: #555; }
+    .ph-meta strong { font-size: 11pt; color: #0d4a8a; display: block; }
+    .applicant-banner { background: #0d4a8a; color: #fff; padding: 10px 14px; margin-bottom: 20px; font-size: 12pt; font-weight: 700; }
+    .doc-checklist { border: 2px solid #8a1538; border-radius: 4px; padding: 12px 16px; margin-bottom: 18px; page-break-inside: avoid; }
+    .doc-checklist h3 { color: #8a1538; font-size: 10pt; margin-bottom: 8px; }
+    .doc-checklist table { width: 100%; border-collapse: collapse; font-size: 9pt; }
+    .doc-checklist td { padding: 5px 8px; border-bottom: 1px solid #eee; }
+    .doc-checklist .req { color: #8a1538; font-weight: 700; }
+    .doc-checklist .cond { color: #854d0e; }
+    .staple-note { font-size: 8.5pt; color: #555; border: 1px dashed #ccc; padding: 8px 12px; margin-bottom: 18px; }
+    .declaration { border: 2px solid #0d4a8a; border-radius: 4px; padding: 12px 16px; margin-bottom: 18px; page-break-inside: avoid; }
+    .declaration h3 { color: #0d4a8a; font-size: 10pt; margin-bottom: 8px; }
+    .decl-item { display: flex; gap: 8px; font-size: 9pt; margin-bottom: 7px; }
+    .decl-box { width: 14px; height: 14px; border: 2px solid #333; flex-shrink: 0; margin-top: 1px; display: inline-block; }
+    .sig-block { margin-top: 20px; display: flex; gap: 40px; }
+    .sig-field { flex: 1; border-top: 1px solid #333; padding-top: 6px; font-size: 9pt; color: #555; }
+    .footer { margin-top: 20px; border-top: 2px solid #8a1538; padding-top: 8px; font-size: 8pt; color: #777; display: flex; justify-content: space-between; }
+    .warn-box { background: #fff8e1; border: 1px solid #f59e0b; padding: 8px 12px; margin-bottom: 18px; font-size: 9pt; color: #7c5a00; }
+  </style>
+</head>
+<body>
+  <div class="page-header">
+    <div class="ph-brand">
+      <h1>FindAJob.qa</h1>
+      <p>Qatar Jobs — Drivers · Labour · Domestic Workers</p>
+    </div>
+    <div class="ph-meta">
+      Application Date: ${appDate}<br>
+      <strong>Ref: ${appRef}</strong>
+    </div>
+  </div>
+
+  <div class="applicant-banner">JOB APPLICATION FORM — ${name.toUpperCase()}</div>
+
+  ${sections.map(sectionHTML).join('')}
+
+  <!-- Document Checklist -->
+  <div class="doc-checklist">
+    <h3>REQUIRED DOCUMENTS CHECKLIST — Attach in This Order</h3>
+    <table>
+      <tr>
+        <td style="width:28px;"><div class="decl-box"></div></td>
+        <td class="req">1. Passport Copy (bio-data page) — REQUIRED</td>
+        <td style="color:#555;font-size:8.5pt;">Valid for at least 6 months from travel date</td>
+      </tr>
+      <tr>
+        <td><div class="decl-box"></div></td>
+        <td class="req">2. Passport-Size Photo — REQUIRED</td>
+        <td style="color:#555;font-size:8.5pt;">Recent · White background · Clear face visible</td>
+      </tr>
+      <tr>
+        <td><div class="decl-box"></div></td>
+        <td class="req">3. CV / Resume — REQUIRED</td>
+        <td style="color:#555;font-size:8.5pt;">Updated with work history, education, skills</td>
+      </tr>
+      <tr>
+        <td><div class="decl-box"></div></td>
+        <td class="cond">4. Educational Certificate — Required for qualified positions</td>
+        <td style="color:#555;font-size:8.5pt;">Highest or most relevant qualification</td>
+      </tr>
+      <tr>
+        <td><div class="decl-box"></div></td>
+        <td class="cond">5. Experience Certificate(s) — Required if you have prior work experience</td>
+        <td style="color:#555;font-size:8.5pt;">Employment/service letters from previous employers</td>
+      </tr>
+      <tr>
+        <td><div class="decl-box"></div></td>
+        <td class="cond">6. Professional Licence / Certification — For licensed professions only</td>
+        <td style="color:#555;font-size:8.5pt;">Nursing, driving, trade, engineering, security licences</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="staple-note">
+    <strong>Instructions for handwritten completion:</strong> Review every field, write clearly in capital letters where requested, sign and date the declaration, and attach the listed documents in order. Attach the passport-size photo with a paper clip to the top-right corner. Do not use tape.
+  </div>
+
+  <!-- Declaration -->
+  <div class="declaration">
+    <h3>DECLARATION</h3>
+    <div class="decl-item"><div class="decl-box"></div><span>I confirm that all information provided in this application is true, correct, and complete to the best of my knowledge.</span></div>
+    <div class="decl-item"><div class="decl-box"></div><span>I consent to FindAJob.qa and the prospective employer retaining my application and contacting me by phone, WhatsApp, or email.</span></div>
+    <div class="sig-block">
+      <div class="sig-field">Signature: ___________________________________</div>
+      <div class="sig-field">Date: _______________________________________</div>
+      <div class="sig-field">Thumb Print (if required): __________</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span>FindAJob.qa · Qatar Jobs Portal · info@findajob.qa</span>
+    <span>Application Reference: ${appRef} · Generated ${appDate}</span>
+  </div>
+</body>
+</html>`;
+
+  const win = window.open('', '_blank');
+  if (!win) { alert('Please allow pop-ups to download the PDF.'); return; }
+  win.document.write(docHTML);
+  win.document.close();
+  win.onload = function() {
+    setTimeout(() => { win.focus(); win.print(); }, 400);
+  };
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+document.addEventListener('DOMContentLoaded', function() {
+  loadContactSettings();
+  setupWhatsAppClose();
+  const hasDraft = load();
+  showPanel(hasDraft ? currentStep : 1);
+  if (hasDraft) {
+    document.getElementById('resumeModal').classList.add('open');
+  }
+  // Wire up email check
+  const emailField = document.getElementById('email');
+  if (emailField) {
+    let emailTimer;
+    emailField.addEventListener('input', () => {
+      clearTimeout(emailTimer);
+      if (!emailField.value.trim()) {
+        setEmailCheckState('idle');
+      } else if (emailField.value.includes('@')) {
+        emailTimer = setTimeout(() => checkEmailExists(emailField.value.trim()), 450);
+      }
+    });
+    emailField.addEventListener('blur', () => checkEmailExists(emailField.value.trim()));
+    if (emailField.value.trim()) checkEmailExists(emailField.value.trim());
+  }
+});
+</script>
+</body>
+</html>
