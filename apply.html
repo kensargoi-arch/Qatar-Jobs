@@ -875,8 +875,8 @@ footer{background:linear-gradient(to right,#0d1b2a,#1a2c42);color:#fff;padding:3
     <div>
       <h3>Contact</h3>
       <div class="public-contact-links">
-        <a id="footer-call-link" href="tel:+97412345678"><i class="fas fa-phone"></i> <span id="footer-call-number">Call us</span></a>
-        <a id="footer-whatsapp-link" href="https://wa.me/97412345678" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> <span id="footer-whatsapp-number">WhatsApp</span></a>
+        <a id="footer-call-link" href="#" style="display:none;"><i class="fas fa-phone"></i> <span id="footer-call-number">Call us</span></a>
+        <a id="footer-whatsapp-link" href="#" style="display:none;" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> <span id="footer-whatsapp-number">WhatsApp</span></a>
       </div>
     </div>
   </div>
@@ -1270,12 +1270,14 @@ async function loadContactSettings() {
     if (callDigits) {
       callLink.href = 'tel:+' + callDigits;
       callText.textContent = callNumber;
+      callLink.style.display = '';
     } else {
       callLink.style.display = 'none';
     }
     if (whatsappDigits) {
       whatsappLink.href = 'https://wa.me/' + whatsappDigits + '?text=' + encodeURIComponent(message);
       whatsappText.textContent = whatsappNumber;
+      whatsappLink.style.display = '';
       floating.href = whatsappLink.href;
       floatingMessage.textContent = message;
       floating.classList.add('is-visible');
