@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard — FindAJob.qa</title>
+<link rel="icon" type="image/png" href="qatar.png">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Poppins',sans-serif;background:#0f172a;color:#e2e8f0;line-height:1.6;min-height:100vh;}
+
+/* ── LOGIN OVERLAY ── */
+#loginOverlay{position:fixed;inset:0;background:#0f172a;display:flex;align-items:center;justify-content:center;z-index:9999;}
+.login-box{background:#1e293b;border:1px solid #334155;border-radius:20px;padding:48px 40px;width:100%;max-width:420px;text-align:center;box-shadow:0 25px 60px rgba(0,0,0,.5);}
+.login-box h1{font-family:'Montserrat',sans-serif;font-size:1.7rem;color:#fff;margin-bottom:6px;}
+.login-box p{color:#94a3b8;margin-bottom:30px;font-size:.9rem;}
+.login-input{width:100%;padding:14px 18px;background:#0f172a;border:2px solid #334155;border-radius:10px;color:#e2e8f0;font-family:'Poppins',sans-serif;font-size:1rem;margin-bottom:16px;}
+.login-input:focus{outline:none;border-color:#8a1538;}
+.login-btn{width:100%;padding:14px;background:linear-gradient(135deg,#8a1538,#b3254c);color:#fff;border:none;border-radius:10px;font-family:'Poppins',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;transition:opacity .2s;}
+.login-btn:hover{opacity:.9;}
+.login-err{color:#f87171;font-size:.85rem;margin-top:10px;display:none;}
+
+/* ── LAYOUT ── */
+#app{display:none;}
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:240px;background:#1e293b;border-right:1px solid #334155;display:flex;flex-direction:column;z-index:100;}
+.sidebar-logo{padding:24px 20px;border-bottom:1px solid #334155;}
+.sidebar-logo h2{font-family:'Montserrat',sans-serif;font-size:1.2rem;color:#fff;}
+.sidebar-logo span{color:#ffcc00;}
+.sidebar-logo p{font-size:.75rem;color:#64748b;margin-top:2px;}
+.sidebar-nav{flex:1;padding:16px 0;overflow-y:auto;}
+.nav-item{display:flex;align-items:center;gap:12px;padding:12px 20px;cursor:pointer;color:#94a3b8;font-size:.9rem;font-weight:500;transition:all .2s;border-left:3px solid transparent;}
+.nav-item:hover{color:#e2e8f0;background:rgba(255,255,255,.04);}
+.nav-item.active{color:#fff;background:rgba(138,21,56,.15);border-left-color:#8a1538;}
+.nav-item i{width:18px;text-align:center;}
+.nav-badge{margin-left:auto;background:#8a1538;color:#fff;font-size:.7rem;padding:2px 8px;border-radius:20px;font-weight:700;}
+.sidebar-footer{padding:16px 20px;border-top:1px solid #334155;}
+.logout-btn{display:flex;align-items:center;gap:10px;color:#64748b;cursor:pointer;font-size:.88rem;transition:color .2s;}
+.logout-btn:hover{color:#f87171;}
+
+.main{margin-left:240px;min-height:100vh;display:flex;flex-direction:column;}
+.topbar{background:#1e293b;border-bottom:1px solid #334155;padding:16px 28px;display:flex;align-items:center;justify-content:space-between;}
+.topbar h1{font-family:'Montserrat',sans-serif;font-size:1.3rem;color:#fff;}
+.topbar-sub{color:#64748b;font-size:.85rem;}
+.content{padding:28px;flex:1;}
+
+/* ── STAT CARDS ── */
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:28px;}
+.stat-card{background:#1e293b;border:1px solid #334155;border-radius:14px;padding:22px 20px;position:relative;overflow:hidden;}
+.stat-card::before{content:'';position:absolute;top:0;right:0;width:80px;height:80px;border-radius:50%;opacity:.08;transform:translate(20px,-20px);}
+.stat-card.maroon::before{background:#8a1538;}
+.stat-card.blue::before{background:#1d4ed8;}
+.stat-card.green::before{background:#16a34a;}
+.stat-card.orange::before{background:#ea580c;}
+.stat-icon{font-size:1.5rem;margin-bottom:10px;}
+.stat-card.maroon .stat-icon{color:#f87171;}
+.stat-card.blue .stat-icon{color:#60a5fa;}
+.stat-card.green .stat-icon{color:#4ade80;}
+.stat-card.orange .stat-icon{color:#fb923c;}
+.stat-num{font-family:'Montserrat',sans-serif;font-size:2rem;font-weight:900;color:#fff;}
+.stat-lbl{font-size:.8rem;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-top:4px;}
+
+/* ── TABLE ── */
+.section-card{background:#1e293b;border:1px solid #334155;border-radius:14px;overflow:hidden;margin-bottom:24px;}
+.section-header{padding:18px 22px;border-bottom:1px solid #334155;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+.section-header h2{font-family:'Montserrat',sans-serif;font-size:1.05rem;color:#fff;display:flex;align-items:center;gap:10px;}
+.search-input{background:#0f172a;border:1px solid #334155;border-radius:8px;padding:9px 14px;color:#e2e8f0;font-family:'Poppins',sans-serif;font-size:.85rem;width:220px;}
+.search-input:focus{outline:none;border-color:#8a1538;}
+.filter-select{background:#0f172a;border:1px solid #334155;border-radius:8px;padding:9px 12px;color:#e2e8f0;font-family:'Poppins',sans-serif;font-size:.85rem;cursor:pointer;}
+.filter-select:focus{outline:none;}
+.table-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;}
+th{padding:12px 16px;background:#0f172a;color:#64748b;font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;text-align:left;}
+td{padding:13px 16px;border-top:1px solid #1e293b;color:#cbd5e1;font-size:.87rem;vertical-align:middle;}
+tr:hover td{background:rgba(255,255,255,.02);}
+.truncate{max-width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+/* ── STATUS BADGES ── */
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:.73rem;font-weight:700;}
+.badge-submitted{background:rgba(251,191,36,.15);color:#fbbf24;border:1px solid rgba(251,191,36,.3);}
+.badge-documents_review{background:rgba(96,165,250,.15);color:#60a5fa;border:1px solid rgba(96,165,250,.3);}
+.badge-employer_review{background:rgba(167,139,250,.15);color:#a78bfa;border:1px solid rgba(167,139,250,.3);}
+.badge-interview_scheduled{background:rgba(251,146,60,.15);color:#fb923c;border:1px solid rgba(251,146,60,.3);}
+.badge-job_offer{background:rgba(74,222,128,.15);color:#4ade80;border:1px solid rgba(74,222,128,.3);}
+.badge-visa_processing{background:rgba(129,140,248,.15);color:#818cf8;border:1px solid rgba(129,140,248,.3);}
+.badge-visa_approved{background:rgba(52,211,153,.15);color:#34d399;border:1px solid rgba(52,211,153,.3);}
+.badge-flight_prep{background:rgba(251,191,36,.15);color:#fbbf24;border:1px solid rgba(251,191,36,.3);}
+.badge-arrived{background:rgba(45,212,191,.15);color:#2dd4bf;border:1px solid rgba(45,212,191,.3);}
+.badge-employed{background:rgba(74,222,128,.2);color:#4ade80;border:1px solid rgba(74,222,128,.4);}
+.badge-rejected{background:rgba(248,113,113,.15);color:#f87171;border:1px solid rgba(248,113,113,.3);}
+.badge-pending{background:rgba(251,191,36,.12);color:#fbbf24;}
+.badge-approved{background:rgba(74,222,128,.15);color:#4ade80;}
+.badge-active{background:rgba(52,211,153,.2);color:#34d399;}
+
+/* ── ACTION BUTTONS ── */
+.btn-action{display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:6px;font-size:.78rem;font-weight:600;cursor:pointer;border:none;font-family:'Poppins',sans-serif;transition:all .2s;}
+.btn-view{background:rgba(96,165,250,.15);color:#60a5fa;border:1px solid rgba(96,165,250,.3);}
+.btn-view:hover{background:rgba(96,165,250,.25);}
+.btn-approve{background:rgba(74,222,128,.15);color:#4ade80;border:1px solid rgba(74,222,128,.3);}
+.btn-approve:hover{background:rgba(74,222,128,.25);}
+.btn-reject{background:rgba(248,113,113,.12);color:#f87171;border:1px solid rgba(248,113,113,.3);}
+.btn-reject:hover{background:rgba(248,113,113,.25);}
+.btn-danger{background:rgba(248,113,113,.12);color:#f87171;border:1px solid rgba(248,113,113,.3);}
+.btn-danger:hover{background:rgba(248,113,113,.25);}
+
+/* ── MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;display:none;align-items:flex-start;justify-content:center;padding:40px 20px;overflow-y:auto;}
+.modal-overlay.open{display:flex;}
+.modal{background:#1e293b;border:1px solid #334155;border-radius:18px;width:100%;max-width:700px;overflow:hidden;}
+.modal-header{padding:22px 26px;border-bottom:1px solid #334155;display:flex;align-items:center;justify-content:space-between;}
+.modal-header h3{font-family:'Montserrat',sans-serif;color:#fff;font-size:1.1rem;}
+.modal-close{background:none;border:none;color:#64748b;cursor:pointer;font-size:1.3rem;transition:color .2s;}
+.modal-close:hover{color:#f87171;}
+.modal-body{padding:26px;max-height:70vh;overflow-y:auto;}
+.modal-footer{padding:18px 26px;border-top:1px solid #334155;display:flex;gap:12px;flex-wrap:wrap;justify-content:flex-end;}
+
+/* ── FORM ELEMENTS IN MODAL ── */
+.field-group{margin-bottom:16px;}
+.field-group label{display:block;color:#94a3b8;font-size:.8rem;font-weight:600;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px;}
+.field-val{color:#e2e8f0;font-size:.9rem;padding:10px 14px;background:#0f172a;border-radius:8px;border:1px solid #334155;}
+.modal-select{width:100%;padding:12px 14px;background:#0f172a;border:1px solid #334155;border-radius:8px;color:#e2e8f0;font-family:'Poppins',sans-serif;font-size:.9rem;}
+.modal-select:focus{outline:none;border-color:#8a1538;}
+.modal-textarea{width:100%;padding:12px 14px;background:#0f172a;border:1px solid #334155;border-radius:8px;color:#e2e8f0;font-family:'Poppins',sans-serif;font-size:.9rem;min-height:90px;resize:vertical;}
+.modal-textarea:focus{outline:none;border-color:#8a1538;}
+.btn-save{padding:10px 22px;background:linear-gradient(135deg,#8a1538,#b3254c);color:#fff;border:none;border-radius:8px;font-family:'Poppins',sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;}
+.btn-cancel{padding:10px 22px;background:#334155;color:#e2e8f0;border:none;border-radius:8px;font-family:'Poppins',sans-serif;font-weight:600;font-size:.9rem;cursor:pointer;}
+.info-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.timeline-list{list-style:none;}
+.timeline-list li{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid #1e293b;font-size:.85rem;}
+.timeline-list li:last-child{border-bottom:none;}
+.tl-dot-sm{width:10px;height:10px;border-radius:50%;background:#8a1538;flex-shrink:0;margin-top:5px;}
+.tl-info{flex:1;}
+.tl-status{font-weight:700;color:#e2e8f0;margin-bottom:2px;}
+.tl-note{color:#94a3b8;font-size:.82rem;}
+.tl-when{color:#475569;font-size:.78rem;margin-top:2px;}
+
+/* ── EMPTY STATE ── */
+.empty-state{text-align:center;padding:50px 20px;color:#475569;}
+.empty-state i{font-size:2.5rem;margin-bottom:12px;display:block;}
+
+/* ── LOADING ── */
+.loading{text-align:center;padding:40px;color:#64748b;}
+.loading i{font-size:1.5rem;animation:spin 1s linear infinite;}
+@keyframes spin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}
+
+/* ── TOAST ── */
+#toast{position:fixed;bottom:24px;right:24px;background:#1e293b;border:1px solid #334155;padding:14px 20px;border-radius:10px;color:#e2e8f0;font-size:.88rem;z-index:9999;display:none;box-shadow:0 10px 30px rgba(0,0,0,.4);max-width:320px;}
+#toast.success{border-color:rgba(74,222,128,.4);background:rgba(22,101,52,.3);}
+#toast.error{border-color:rgba(248,113,113,.4);background:rgba(127,29,29,.3);}
+.loading-dots{display:inline-flex;gap:3px;vertical-align:middle;margin-right:5px}.loading-dots i{width:5px;height:5px;border-radius:50%;background:currentColor;display:inline-block;animation:adminDot 1s infinite}.loading-dots i:nth-child(2){animation-delay:.15s}.loading-dots i:nth-child(3){animation-delay:.3s}@keyframes adminDot{0%,60%,100%{opacity:.35;transform:translateY(0)}30%{opacity:1;transform:translateY(-3px)}}
+
+@media(max-width:768px){
+  .sidebar{width:100%;position:relative;height:auto;}
+  .main{margin-left:0;}
+  .info-grid-2{grid-template-columns:1fr;}
+  .stats-row{grid-template-columns:repeat(2,1fr);}
+}
+</style>
+</head>
+<body>
+
+<!-- ── LOGIN ── -->
+<div id="loginOverlay">
+  <div class="login-box">
+    <div style="font-size:3rem;margin-bottom:16px;">🔐</div>
+    <h1>FindAJob<span style="color:#ffcc00">.qa</span></h1>
+    <p>Admin Dashboard — Authorised personnel only</p>
+    <input type="password" id="loginPw" class="login-input" placeholder="Enter admin password" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="login-btn" onclick="doLogin()"><i class="fas fa-sign-in-alt"></i> Sign In</button>
+    <div class="login-err" id="loginErr">Incorrect password. Please try again.</div>
+  </div>
+</div>
+
+<!-- ── MAIN APP ── -->
+<div id="app" style="display:flex;">
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <div class="sidebar-logo">
+      <h2>FindAJob<span>.qa</span></h2>
+      <p>Admin Dashboard</p>
+    </div>
+    <div class="sidebar-nav">
+      <div class="nav-item active" onclick="showSection('dashboard')"><i class="fas fa-chart-line"></i> Dashboard</div>
+      <div class="nav-item" onclick="showSection('applications')"><i class="fas fa-file-signature"></i> Applications <span class="nav-badge" id="appBadge">…</span></div>
+      <div class="nav-item" onclick="showSection('agents')"><i class="fas fa-user-tie"></i> Agents <span class="nav-badge" id="agentBadge">…</span></div>
+      <div class="nav-item" onclick="showSection('jobs')"><i class="fas fa-briefcase"></i> Job Listings</div>
+      <div class="nav-item" onclick="showSection('employers')"><i class="fas fa-building"></i> Employers <span class="nav-badge" id="employerBadge">…</span></div>
+      <div class="nav-item" onclick="showSection('faqs')"><i class="fas fa-robot"></i> Bot Questions</div>
+      <div class="nav-item" onclick="showSection('automated-messages')"><i class="fas fa-comment-dots"></i> Automated Messages</div>
+      <div class="nav-item" onclick="showSection('contact-settings')"><i class="fas fa-address-book"></i> Contact Settings</div>
+    </div>
+    <div class="sidebar-footer">
+      <div class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Sign Out</div>
+    </div>
+  </nav>
+
+  <!-- Main -->
+  <div class="main">
+    <div class="topbar">
+      <div>
+        <h1 id="sectionTitle">Dashboard</h1>
+        <div class="topbar-sub" id="sectionSub">Overview of FindAJob.qa operations</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span style="font-size:.82rem;color:#64748b;" id="topbarTime"></span>
+        <a href="index.html" target="_blank" style="color:#64748b;font-size:.82rem;text-decoration:none;"><i class="fas fa-external-link-alt"></i> View Site</a>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- ── DASHBOARD OVERVIEW ── -->
+      <div id="sec-dashboard">
+        <div class="stats-row" id="statsRow">
+          <div class="stat-card maroon"><div class="stat-icon"><i class="fas fa-file-signature"></i></div><div class="stat-num" id="sTotal">…</div><div class="stat-lbl">Total Applications</div></div>
+          <div class="stat-card blue"><div class="stat-icon"><i class="fas fa-clock"></i></div><div class="stat-num" id="sPending">…</div><div class="stat-lbl">Pending Review</div></div>
+          <div class="stat-card green"><div class="stat-icon"><i class="fas fa-hard-hat"></i></div><div class="stat-num" id="sEmployed">…</div><div class="stat-lbl">Employed</div></div>
+          <div class="stat-card orange"><div class="stat-icon"><i class="fas fa-user-tie"></i></div><div class="stat-num" id="sAgents">…</div><div class="stat-lbl">Agent Applications</div></div>
+          <div class="stat-card blue"><div class="stat-icon"><i class="fas fa-briefcase"></i></div><div class="stat-num" id="sJobs">…</div><div class="stat-lbl">Active Jobs</div></div>
+        </div>
+
+        <div class="section-card">
+          <div class="section-header">
+            <h2><i class="fas fa-clock" style="color:#fbbf24"></i> Recent Applications</h2>
+            <button class="btn-action btn-view" onclick="showSection('applications')"><i class="fas fa-arrow-right"></i> View All</button>
+          </div>
+          <div class="table-wrap">
+            <table id="recentTable">
+              <thead><tr><th>Reference</th><th>Applicant</th><th>Position</th><th>Status</th><th>Submitted</th></tr></thead>
+              <tbody id="recentBody"><tr><td colspan="5" class="loading"><i class="fas fa-spinner"></i></td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── APPLICATIONS ── -->
+      <div id="sec-applications" style="display:none;">
+        <div class="section-card">
+          <div class="section-header">
+            <h2><i class="fas fa-file-signature" style="color:#f87171"></i> All Applications</h2>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <input class="search-input" id="appSearch" placeholder="Search name, email, ref…" oninput="filterApps()">
+              <select class="filter-select" id="appStatusFilter" onchange="filterApps()">
+                <option value="">All Statuses</option>
+                <option value="submitted">Submitted</option>
+                <option value="documents_review">Documents Review</option>
+                <option value="employer_review">Employer Review</option>
+                <option value="interview_scheduled">Interview Scheduled</option>
+                <option value="job_offer">Job Offer</option>
+                <option value="visa_processing">Visa Processing</option>
+                <option value="visa_approved">Visa Approved</option>
+                <option value="flight_prep">Flight Prep</option>
+                <option value="arrived">Arrived</option>
+                <option value="employed">Employed</option>
+                 <option value="cancelled">Cancelled</option>
+                <option value="rejected">Rejected</option>
+              </select>
+              <button class="btn-action btn-view" onclick="loadApplications()"><i class="fas fa-sync-alt"></i> Refresh</button>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Reference</th><th>Name</th><th>Email / Phone</th><th>Position</th><th>Nationality</th><th>Status</th><th>Submitted</th><th>Actions</th></tr></thead>
+              <tbody id="appsBody"><tr><td colspan="8" class="loading"><i class="fas fa-spinner"></i></td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── AGENTS ── -->
+      <div id="sec-agents" style="display:none;">
+        <div class="section-card" style="margin-bottom:20px;">
+          <div class="section-header">
+            <h2><i class="fas fa-user-tie" style="color:#a78bfa"></i> Agent Applications</h2>
+            <div style="display:flex;gap:10px;">
+              <select class="filter-select" id="agentStatusFilter" onchange="loadAgents()">
+                <option value="">All Statuses</option>
+                <option value="pending">Pending</option>
+                <option value="approved">Approved</option>
+                <option value="active">Active</option>
+                <option value="rejected">Rejected</option>
+              </select>
+              <button class="btn-action btn-view" onclick="loadAgents()"><i class="fas fa-sync-alt"></i> Refresh</button>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Name</th><th>Email / Phone</th><th>Nationality</th><th>Location</th><th>Qatar Area</th><th>Status</th><th>Applied</th><th>Actions</th></tr></thead>
+              <tbody id="agentsBody"><tr><td colspan="8" class="loading"><i class="fas fa-spinner"></i></td></tr></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Add agent application panel -->
+        <div class="section-card">
+          <div class="section-header">
+            <h2><i class="fas fa-plus-circle" style="color:#4ade80"></i> Qatar Agent Locations</h2>
+          </div>
+          <div style="padding:20px;color:#94a3b8;font-size:.9rem;">
+            Agents can apply via the public <a href="apply-agent.html" style="color:#60a5fa;">Become an Agent</a> page. Once approved, they can process applications for their assigned Qatar area.
+            <div style="margin-top:16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;" id="agentAreaGrid"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── JOBS ── -->
+      <div id="sec-jobs" style="display:none;">
+        <div class="section-card">
+          <div class="section-header">
+            <h2><i class="fas fa-briefcase" style="color:#fb923c"></i> Job Listings</h2>
+            <button class="btn-action btn-view" onclick="loadJobs()"><i class="fas fa-sync-alt"></i> Refresh</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Job Title</th><th>Company</th><th>Category</th><th>Location</th><th>Positions</th><th>Status</th><th>Posted</th><th>Actions</th></tr></thead>
+              <tbody id="jobsBody"><tr><td colspan="8" class="loading"><i class="fas fa-spinner"></i></td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── EMPLOYERS ── -->
+      <div id="sec-employers" style="display:none;">
+        <div class="section-card">
+          <div class="section-header">
+            <h2><i class="fas fa-building" style="color:#60a5fa"></i> Employer Approvals</h2>
+            <button class="btn-action btn-view" onclick="loadEmployers()"><i class="fas fa-sync-alt"></i> Refresh</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Employer</th><th>Company</th><th>Email / Phone</th><th>Location</th><th>Status / Presence</th><th>Updated</th><th>Actions</th></tr></thead>
+              <tbody id="employersBody"><tr><td colspan="7" class="loading"><i class="fas fa-spinner"></i></td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── BOT QUESTIONS ── -->
+      <div id="sec-faqs" style="display:none;">
+        <div class="section-card">
+          <div class="section-header">
+            <h2><i class="fas fa-robot" style="color:#a78bfa"></i> Applicant Bot Questions</h2>
+            <button class="btn-action btn-view" onclick="resetFaqForm()"><i class="fas fa-plus"></i> New Question</button>
+          </div>
+          <div style="padding:22px;border-bottom:1px solid #334155;">
+            <div style="color:#94a3b8;font-size:.82rem;margin-bottom:14px;">Featured questions appear first in the applicant dashboard. Active questions are visible to applicants.</div>
+            <input type="hidden" id="faqKey">
+            <div class="info-grid-2">
+              <div class="field-group"><label>Question key</label><input class="modal-select" id="faqKeyInput" placeholder="e.g. visa"></div>
+              <div class="field-group"><label>Display order</label><input class="modal-select" id="faqOrder" type="number" min="0" value="100"></div>
+            </div>
+            <div class="field-group"><label>Question</label><input class="modal-select" id="faqQuestion" placeholder="What would you like to ask?"></div>
+            <div class="field-group"><label>Bot answer</label><textarea class="modal-textarea" id="faqAnswer" placeholder="Write the answer applicants should receive."></textarea></div>
+            <div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap;color:#cbd5e1;font-size:.85rem;">
+              <label><input id="faqFeatured" type="checkbox"> Featured</label>
+              <label><input id="faqActive" type="checkbox" checked> Visible to applicants</label>
+              <button class="btn-save" onclick="saveFaq()"><i class="fas fa-save"></i> Save Question</button>
+              <button class="btn-cancel" onclick="resetFaqForm()">Clear</button>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Question</th><th>Answer</th><th>Featured</th><th>Active</th><th>Order</th><th>Actions</th></tr></thead>
+              <tbody id="faqsBody"><tr><td colspan="6" class="loading"><i class="fas fa-spinner"></i></td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── CONTACT SETTINGS ── -->
+      <div id="sec-automated-messages" style="display:none;">
+        <div class="section-card">
+          <div class="section-header">
+            <h2><i class="fas fa-comment-dots" style="color:#fbbf24"></i> Automated Messages</h2>
+            <button class="btn-action btn-view" onclick="resetMessageForm()"><i class="fas fa-plus"></i> New Message</button>
+          </div>
+          <div style="padding:22px;border-bottom:1px solid #334155;">
+            <div style="color:#94a3b8;font-size:.82rem;margin-bottom:14px;">Edit the text shown by the application lookup helpers and the automatic progress updates sent after employer or admin status changes.</div>
+            <input type="hidden" id="messageKey">
+            <div class="info-grid-2">
+              <div class="field-group"><label>Message key</label><input class="modal-select" id="messageKeyInput" placeholder="e.g. visa_processing"></div>
+              <div class="field-group"><label>Category</label><select class="modal-select" id="messageCategory"><option value="helper">Helper text</option><option value="progress">Progress update</option></select></div>
+            </div>
+            <div class="info-grid-2">
+              <div class="field-group"><label>Admin label</label><input class="modal-select" id="messageLabel" placeholder="Visa processing"></div>
+              <div class="field-group"><label>Display order</label><input class="modal-select" id="messageOrder" type="number" min="0" value="100"></div>
+            </div>
+            <div class="field-group"><label>Message text</label><textarea class="modal-textarea" id="messageBody" maxlength="2000" placeholder="Write the message applicants should receive."></textarea></div>
+            <div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap;color:#cbd5e1;font-size:.85rem;">
+              <label><input id="messageActive" type="checkbox" checked> Active</label>
+              <button class="btn-save" onclick="saveAutomatedMessage(this)"><i class="fas fa-save"></i> Save Message</button>
+              <button class="btn-cancel" onclick="resetMessageForm()">Clear</button>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Label</th><th>Key</th><th>Category</th><th>Message</th><th>Active</th><th>Order</th><th>Actions</th></tr></thead>
+              <tbody id="messagesBody"><tr><td colspan="7" class="loading"><i class="fas fa-spinner"></i></td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── CONTACT SETTINGS ── -->
+      <div id="sec-contact-settings" style="display:none;">
+        <div class="section-card">
+          <div class="section-header">
+            <h2><i class="fas fa-address-book" style="color:#4ade80"></i> Public Contact Settings</h2>
+          </div>
+          <div style="padding:22px;">
+            <div style="color:#94a3b8;font-size:.82rem;margin-bottom:18px;">
+              These values update the WhatsApp popup and footer links on the public Home and Apply pages.
+              Enter numbers with the country code, for example <strong style="color:#e2e8f0;">+974...</strong>.
+            </div>
+            <div class="info-grid-2">
+              <div class="field-group">
+                <label for="contactWhatsappNumber">WhatsApp number</label>
+                <input class="modal-select" id="contactWhatsappNumber" type="tel" placeholder="+974 0000 0000">
+              </div>
+              <div class="field-group">
+                <label for="contactCallNumber">Call number</label>
+                <input class="modal-select" id="contactCallNumber" type="tel" placeholder="+974 0000 0000">
+              </div>
+            </div>
+            <div class="field-group">
+              <label for="contactWhatsappMessage">WhatsApp instant message</label>
+              <textarea class="modal-textarea" id="contactWhatsappMessage" maxlength="500" placeholder="Hello, I would like to ask about available jobs in Qatar."></textarea>
+              <div style="color:#64748b;font-size:.78rem;margin-top:6px;">This message is pre-filled when a visitor taps the WhatsApp button.</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+              <button class="btn-save" onclick="saveContactSettings()"><i class="fas fa-save"></i> Save Contact Settings</button>
+              <span id="contactSettingsStatus" style="color:#94a3b8;font-size:.82rem;"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /main -->
+</div><!-- /app -->
+
+<!-- ── APPLICATION DETAIL MODAL ── -->
+<div class="modal-overlay" id="appModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modalAppTitle">Application Detail</h3>
+      <button class="modal-close" onclick="closeModal('appModal')"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body" id="modalAppBody">Loading…</div>
+    <div class="modal-footer">
+      <div style="flex:1;">
+        <label style="color:#94a3b8;font-size:.8rem;font-weight:600;display:block;margin-bottom:6px;">UPDATE STATUS</label>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+          <select class="modal-select" id="modalStatusSel" style="width:220px;">
+            <option value="submitted">Submitted</option>
+            <option value="documents_review">Documents Review</option>
+            <option value="employer_review">Employer Review</option>
+            <option value="interview_scheduled">Interview Scheduled</option>
+            <option value="job_offer">Job Offer</option>
+            <option value="visa_processing">Visa Processing</option>
+            <option value="visa_approved">Visa Approved</option>
+            <option value="flight_prep">Flight Prep</option>
+            <option value="arrived">Arrived in Qatar</option>
+            <option value="employed">Employed</option>
+            <option value="rejected">Rejected</option>
+          </select>
+          <textarea class="modal-textarea" id="modalNote" placeholder="Add a note (optional)" style="min-height:60px;width:100%;margin-top:8px;"></textarea>
+          <button class="btn-save" onclick="saveAppStatus(this)"><i class="fas fa-save"></i> Save Status</button>
+          <button class="btn-danger" onclick="deleteApp(this)"><i class="fas fa-trash"></i> Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── AGENT DETAIL MODAL ── -->
+<div class="modal-overlay" id="agentModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modalAgentTitle">Agent Application</h3>
+      <button class="modal-close" onclick="closeModal('agentModal')"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body" id="modalAgentBody">Loading…</div>
+    <div class="modal-footer">
+      <button class="btn-approve" onclick="setAgentStatus('approved')"><i class="fas fa-check"></i> Approve</button>
+      <button class="btn-approve" onclick="setAgentStatus('active')" style="background:rgba(52,211,153,.15);color:#34d399;border-color:rgba(52,211,153,.3);"><i class="fas fa-star"></i> Set Active</button>
+      <button class="btn-reject" onclick="setAgentStatus('rejected')"><i class="fas fa-times"></i> Reject</button>
+      <button class="btn-cancel" onclick="closeModal('agentModal')">Close</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="employerModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modalEmployerTitle">Employer Profile</h3>
+      <button class="modal-close" onclick="closeModal('employerModal')"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body" id="modalEmployerBody">Loading…</div>
+    <div class="modal-footer"><button class="btn-cancel" onclick="closeModal('employerModal')">Close</button></div>
+  </div>
+</div>
+
+<!-- ── TOAST ── -->
+<div id="toast"></div>
+
+<script>
+// ── Config ──────────────────────────────────────────────────────────────────
+// The admin UI and API are separate Render services. Do not use the admin
+// page origin for production API calls because it does not expose /api.
+const API_URL = window.ADMIN_API_URL || (
+  ['localhost', '127.0.0.1'].includes(window.location.hostname)
+    ? window.location.origin + '/api'
+    : 'https://qatar-jobs-server.onrender.com/api'
+);
+let adminPassword = '';
+let adminSession = localStorage.getItem('fjqAdminSession') || '';
+let adminSessionExpires = Number(localStorage.getItem('fjqAdminSessionExpires') || 0);
+let currentAppId = null;
+let currentAgentId = null;
+let allApplications = [];
+let currentFaqKey = '';
+
+// ── Time ────────────────────────────────────────────────────────────────────
+function updateTime() {
+  document.getElementById('topbarTime').textContent = new Date().toLocaleString('en-GB', { weekday:'short', day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' });
+}
+setInterval(updateTime, 1000);
+updateTime();
+
+// ── Login ───────────────────────────────────────────────────────────────────
+function doLogin() {
+  const pw = document.getElementById('loginPw').value;
+  if (!pw) return;
+  const button = document.querySelector('.login-btn');
+  if (button) { button.disabled = true; button.innerHTML = '<span class="loading-dots"><i></i><i></i><i></i></span>Signing in'; }
+  fetch(`${API_URL}/admin/login`, { method:'POST', headers: { 'Content-Type':'application/json' }, body: JSON.stringify({ password: pw }) })
+    .then(r => {
+      if (r.status === 401) {
+        return r.json().catch(() => ({})).then(data => { throw new Error(data.error || 'Incorrect password.'); });
+      }
+      if (!r.ok) {
+        throw new Error(`Could not reach the admin API (${r.status}).`);
+      }
+      return r.json();
+    })
+    .then(data => {
+      adminSession = data.token;
+      adminSessionExpires = Date.now() + Number(data.expiresIn || 86400) * 1000;
+      localStorage.setItem('fjqAdminSession', adminSession);
+      localStorage.setItem('fjqAdminSessionExpires', String(adminSessionExpires));
+      document.getElementById('loginOverlay').style.display = 'none';
+      document.getElementById('app').style.display = 'flex';
+      loadDashboard();
+      loadApplications();
+    })
+    .catch(error => {
+      document.getElementById('loginErr').textContent = error.message || 'Could not reach the admin API.';
+      document.getElementById('loginErr').style.display = 'block';
+    })
+    .finally(() => {
+      if (button) { button.disabled = false; button.innerHTML = '<i class="fas fa-sign-in-alt"></i> Sign In'; }
+    });
+}
+
+function logout() {
+  adminPassword = '';
+  adminSession = '';
+  adminSessionExpires = 0;
+  localStorage.removeItem('fjqAdminSession');
+  localStorage.removeItem('fjqAdminSessionExpires');
+  document.getElementById('loginOverlay').style.display = 'flex';
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('loginPw').value = '';
+}
+
+// ── Navigation ───────────────────────────────────────────────────────────────
+const sections = ['dashboard','applications','agents','jobs','employers','faqs','automated-messages','contact-settings'];
+const sectionTitles = {
+  dashboard: ['Dashboard','Overview of FindAJob.qa operations'],
+  applications: ['Applications','All submitted job applications'],
+  agents: ['Agents','Qatar agent applications and management'],
+  jobs: ['Job Listings','Employer-submitted job postings'],
+  employers: ['Employers','Review employer profiles and account access'],
+  faqs: ['Bot Questions','Manage applicant dashboard prompts and answers'],
+  'automated-messages': ['Automated Messages','Manage lookup helpers and application-progress replies'],
+  'contact-settings': ['Contact Settings','Manage public WhatsApp and call details'],
+};
+
+function showSection(name) {
+  sections.forEach(s => {
+    document.getElementById('sec-' + s).style.display = s === name ? '' : 'none';
+    document.querySelectorAll('.nav-item').forEach((el, i) => {
+      el.classList.toggle('active', sections[i] === name);
+    });
+  });
+  const [title, sub] = sectionTitles[name];
+  document.getElementById('sectionTitle').textContent = title;
+  document.getElementById('sectionSub').textContent = sub;
+  if (name === 'agents') loadAgents();
+  if (name === 'jobs') loadJobs();
+  if (name === 'dashboard') loadDashboard();
+  if (name === 'employers') loadEmployers();
+  if (name === 'faqs') loadFaqs();
+  if (name === 'automated-messages') loadAutomatedMessages();
+  if (name === 'contact-settings') loadContactSettings();
+}
+
+// ── API helper ───────────────────────────────────────────────────────────────
+function apiFetch(path, opts = {}) {
+  if (adminSessionExpires && Date.now() >= adminSessionExpires) logout();
+  return fetch(API_URL + path, {
+    ...opts,
+    headers: { 'Content-Type': 'application/json', 'X-Admin-Session': adminSession, ...(adminPassword ? {'X-Admin-Password': adminPassword} : {}), ...(opts.headers || {}) },
+  });
+}
+
+async function apiJson(response) {
+  let data;
+  try {
+    data = await response.json();
+  } catch {
+    throw new Error(`Admin API returned an invalid response (${response.status}).`);
+  }
+  if (!response.ok) throw new Error(data?.error || `Admin API request failed (${response.status}).`);
+  return data;
+}
+
+function renderTableError(id, colspan, error) {
+  const message = error?.message || 'Could not load data.';
+  document.getElementById(id).innerHTML =
+    `<tr><td colspan="${colspan}" class="empty-state"><i class="fas fa-exclamation-triangle"></i> ${esc(message)}</td></tr>`;
+  toast(message, 'error');
+}
+
+function setAdminBusy(button, label) {
+  if (!button) return () => {};
+  const original = button.innerHTML;
+  button.disabled = true;
+  button.setAttribute('aria-busy', 'true');
+  button.innerHTML = '<span class="loading-dots"><i></i><i></i><i></i></span>' + label;
+  return () => {
+    button.disabled = false;
+    button.removeAttribute('aria-busy');
+    button.innerHTML = original;
+  };
+}
+
+function loadContactSettings() {
+  const status = document.getElementById('contactSettingsStatus');
+  if (status) status.textContent = 'Loading…';
+  apiFetch('/admin/contact-settings')
+    .then(apiJson)
+    .then(data => {
+      const settings = data.contactSettings || {};
+      document.getElementById('contactWhatsappNumber').value = settings.whatsapp_number || '';
+      document.getElementById('contactCallNumber').value = settings.call_number || '';
+      document.getElementById('contactWhatsappMessage').value = settings.whatsapp_message || '';
+      if (status) status.textContent = 'Loaded from Supabase';
+    })
+    .catch(error => {
+      if (status) status.textContent = error.message || 'Could not load settings.';
+      toast(error.message || 'Could not load contact settings.', 'error');
+    });
+}
+
+function saveContactSettings() {
+  const button = document.querySelector('#sec-contact-settings .btn-save');
+  const status = document.getElementById('contactSettingsStatus');
+  const payload = {
+    whatsappNumber: document.getElementById('contactWhatsappNumber').value.trim(),
+    callNumber: document.getElementById('contactCallNumber').value.trim(),
+    whatsappMessage: document.getElementById('contactWhatsappMessage').value.trim(),
+  };
+  if (button) { button.disabled = true; button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving…'; }
+  apiFetch('/admin/contact-settings', {
+    method: 'PUT',
+    body: JSON.stringify(payload),
+  })
+    .then(apiJson)
+    .then(() => {
+      if (status) status.textContent = 'Saved successfully';
+      toast('Contact settings saved. The public pages will use the new values.');
+    })
+    .catch(error => {
+      if (status) status.textContent = error.message || 'Could not save settings.';
+      toast(error.message || 'Could not save contact settings.', 'error');
+    })
+    .finally(() => {
+      if (button) { button.disabled = false; button.innerHTML = '<i class="fas fa-save"></i> Save Contact Settings'; }
+    });
+}
+
+// ── Toast ────────────────────────────────────────────────────────────────────
+function toast(msg, type = 'success') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = type;
+  el.style.display = 'block';
+  setTimeout(() => { el.style.display = 'none'; }, 3500);
+}
+
+// ── Dashboard ────────────────────────────────────────────────────────────────
+function loadDashboard() {
+  apiFetch('/admin/stats')
+    .then(apiJson)
+    .then(renderStats)
+    .catch(error => {
+      renderTableError('recentBody', 5, error);
+    });
+}
+
+function renderStats(data) {
+  document.getElementById('sTotal').textContent = data.totalApplications || 0;
+  document.getElementById('sPending').textContent = (data.statusCounts?.submitted || 0) + (data.statusCounts?.documents_review || 0);
+  document.getElementById('sEmployed').textContent = data.statusCounts?.employed || 0;
+  document.getElementById('sAgents').textContent = data.totalAgents || 0;
+  document.getElementById('sJobs').textContent = data.totalJobs || 0;
+  document.getElementById('appBadge').textContent = data.totalApplications || 0;
+  document.getElementById('agentBadge').textContent = data.agentStatusCounts?.pending || 0;
+
+  const tbody = document.getElementById('recentBody');
+  const apps = data.recentApplications || [];
+  if (!apps.length) { tbody.innerHTML = '<tr><td colspan="5" class="empty-state"><i class="fas fa-inbox"></i> No applications yet</td></tr>'; return; }
+  tbody.innerHTML = apps.map(a => `
+    <tr>
+      <td><code style="color:#60a5fa;font-size:.82rem;">${a.tracking_number}</code></td>
+      <td>${esc(a.full_name)}</td>
+      <td>${esc(a.job_title)}</td>
+      <td>${badgeFor(a.status)}</td>
+      <td style="color:#64748b;">${fmtDate(a.submitted_at)}</td>
+    </tr>`).join('');
+}
+
+// ── Applications ─────────────────────────────────────────────────────────────
+function loadApplications() {
+  document.getElementById('appsBody').innerHTML = '<tr><td colspan="8" class="loading"><i class="fas fa-spinner"></i></td></tr>';
+  apiFetch('/admin/applications?limit=200')
+    .then(apiJson)
+    .then(data => {
+      allApplications = data.applications || [];
+      renderAppsTable(allApplications);
+    })
+    .catch(error => renderTableError('appsBody', 8, error));
+}
+
+function filterApps() {
+  const q = document.getElementById('appSearch').value.toLowerCase();
+  const st = document.getElementById('appStatusFilter').value;
+  const filtered = allApplications.filter(a => {
+    const matchQ = !q || (a.full_name||'').toLowerCase().includes(q) || (a.email||'').toLowerCase().includes(q) || (a.tracking_number||'').toLowerCase().includes(q) || (a.phone||'').includes(q);
+    const matchSt = !st || a.status === st;
+    return matchQ && matchSt;
+  });
+  renderAppsTable(filtered);
+}
+
+function renderAppsTable(apps) {
+  const tbody = document.getElementById('appsBody');
+  if (!apps.length) { tbody.innerHTML = '<tr><td colspan="8" class="empty-state"><i class="fas fa-inbox"></i> No applications found</td></tr>'; return; }
+  tbody.innerHTML = apps.map(a => `
+    <tr>
+      <td><code style="color:#60a5fa;font-size:.82rem;">${esc(a.tracking_number)}</code></td>
+      <td class="truncate">${esc(a.full_name)}</td>
+      <td style="font-size:.8rem;"><div>${esc(a.email||'—')}</div><div style="color:#64748b;">${esc(a.phone||'')}</div></td>
+      <td class="truncate">${esc(a.job_title||'')}</td>
+      <td>${esc(a.nationality||'')}</td>
+      <td>${badgeFor(a.status)}</td>
+      <td style="color:#64748b;font-size:.82rem;">${fmtDate(a.submitted_at)}</td>
+      <td>
+        <button class="btn-action btn-view" onclick="openApp('${a.id}')"><i class="fas fa-eye"></i> View</button>
+      </td>
+    </tr>`).join('');
+}
+
+function openApp(id) {
+  currentAppId = id;
+  const app = allApplications.find(a => a.id === id);
+  if (!app) return;
+  document.getElementById('modalAppTitle').textContent = `${app.full_name} — ${app.tracking_number}`;
+  document.getElementById('modalStatusSel').value = app.status;
+  document.getElementById('modalNote').value = app.admin_notes || '';
+
+  // Fetch full detail + history
+  apiFetch(`/admin/applications/${id}`).then(r => r.json()).then(data => {
+    const a = data.application;
+    const hist = data.history || [];
+    document.getElementById('modalAppBody').innerHTML = `
+      <div class="info-grid-2" style="margin-bottom:20px;">
+        <div class="field-group"><label>Full Name</label><div class="field-val">${esc(a.full_name)}</div></div>
+        <div class="field-group"><label>Tracking #</label><div class="field-val" style="color:#60a5fa;font-family:monospace;">${esc(a.tracking_number)}</div></div>
+        <div class="field-group"><label>Email</label><div class="field-val">${esc(a.email||'—')}</div></div>
+        <div class="field-group"><label>Phone (WhatsApp)</label><div class="field-val">${esc(a.phone)}</div></div>
+        <div class="field-group"><label>Gender</label><div class="field-val">${esc(a.gender||'—')}</div></div>
+        <div class="field-group"><label>Nationality</label><div class="field-val">${esc(a.nationality||'—')}</div></div>
+        <div class="field-group"><label>Country of Residence</label><div class="field-val">${esc(a.country_of_residence||'—')}</div></div>
+        <div class="field-group"><label>Date of Birth</label><div class="field-val">${esc(a.dob||'—')}</div></div>
+        <div class="field-group"><label>Position Applied</label><div class="field-val">${esc(a.job_title||'—')}</div></div>
+        <div class="field-group"><label>Preferred Location</label><div class="field-val">${esc(a.job_location||'—')}</div></div>
+        <div class="field-group"><label>Experience</label><div class="field-val">${esc(a.experience||'—')}</div></div>
+        <div class="field-group"><label>Education</label><div class="field-val">${esc(a.education||'—')}</div></div>
+        <div class="field-group"><label>Passport Number</label><div class="field-val">${esc(a.passport_number||'—')}</div></div>
+        <div class="field-group"><label>Passport Expiry</label><div class="field-val">${esc(a.passport_expiry||'—')}</div></div>
+        <div class="field-group"><label>Driving Licence</label><div class="field-val">${esc(a.driving_licence||'—')}</div></div>
+        <div class="field-group"><label>English Level</label><div class="field-val">${esc(a.english_level||'—')}</div></div>
+      </div>
+      <div class="field-group"><label>Industry Preferences</label><div class="field-val">${(a.industry||[]).join(', ')||'—'}</div></div>
+      <div class="field-group"><label>Emergency Contact</label><div class="field-val">${esc(a.emergency_name||'—')} (${esc(a.emergency_relationship||'')})</div></div>
+      <div class="field-group"><label>Current Status</label><div>${badgeFor(a.status)}</div></div>
+      <div class="field-group"><label>Submitted</label><div class="field-val">${fmtDate(a.submitted_at)}</div></div>
+      <hr style="border-color:#334155;margin:20px 0;">
+      <div class="field-group"><label>Status Timeline</label>
+        <ul class="timeline-list">${hist.map(h => `
+          <li>
+            <div class="tl-dot-sm"></div>
+            <div class="tl-info">
+              <div class="tl-status">${fmtStatus(h.status)}</div>
+              <div class="tl-note">${esc(h.note||'')}</div>
+              <div class="tl-when">${fmtDate(h.created_at)} · ${esc(h.changed_by||'System')}</div>
+            </div>
+          </li>`).join('')}
+        </ul>
+      </div>
+    `;
+  });
+  openModal('appModal');
+}
+
+async function saveAppStatus(button) {
+  if (!currentAppId) return;
+  const restore = setAdminBusy(button || document.querySelector('#appModal .btn-save'), 'Saving status');
+  const status = document.getElementById('modalStatusSel').value;
+  const note = document.getElementById('modalNote').value;
+  try {
+    const r = await apiFetch(`/admin/applications/${currentAppId}/status`, {
+      method: 'PUT',
+      body: JSON.stringify({ status, note, changedBy: 'Admin', statusStep: statusToStep(status) }),
+    });
+    if (r.ok) { toast('Status updated!'); closeModal('appModal'); loadApplications(); }
+    else { toast('Error updating status', 'error'); }
+  } finally {
+    restore();
+  }
+}
+
+async function deleteApp(button) {
+  if (!currentAppId || !confirm('Delete this application? This cannot be undone.')) return;
+  const restore = setAdminBusy(button, 'Deleting');
+  try {
+    const r = await apiFetch(`/admin/applications/${currentAppId}`, { method: 'DELETE' });
+    if (r.ok) { toast('Application deleted'); closeModal('appModal'); loadApplications(); }
+    else { toast('Error deleting', 'error'); }
+  } finally {
+    restore();
+  }
+}
+
+// ── Agents ───────────────────────────────────────────────────────────────────
+function loadAgents() {
+  const st = document.getElementById('agentStatusFilter').value;
+  document.getElementById('agentsBody').innerHTML = '<tr><td colspan="8" class="loading"><i class="fas fa-spinner"></i></td></tr>';
+  apiFetch(`/admin/agents${st ? '?status=' + st : ''}`).then(apiJson).then(data => {
+    const agents = data.agents || [];
+    if (!agents.length) { document.getElementById('agentsBody').innerHTML = '<tr><td colspan="8" class="empty-state"><i class="fas fa-users"></i> No agents found</td></tr>'; return; }
+    document.getElementById('agentsBody').innerHTML = agents.map(a => `
+      <tr>
+        <td>${esc(a.name)}</td>
+        <td style="font-size:.8rem;"><div>${esc(a.email||'—')}</div><div style="color:#64748b;">${esc(a.phone||'')}</div></td>
+        <td>${esc(a.nationality||'—')}</td>
+        <td>${esc(a.location_city||'—')}</td>
+        <td>${esc(a.area_in_qatar||'—')}</td>
+        <td>${agentBadge(a.status)}</td>
+        <td style="color:#64748b;font-size:.82rem;">${fmtDate(a.created_at)}</td>
+        <td>
+           <button class="btn-action btn-view" onclick="openAgent(${JSON.stringify(a).replace(/"/g,'&quot;')})"><i class="fas fa-eye"></i> View</button>
+           <button class="btn-action btn-reject" onclick="deleteAgent('${a.id}')"><i class="fas fa-trash"></i> Delete</button>
+        </td>
+      </tr>`).join('');
+
+    // Area grid
+    const areas = {};
+    agents.filter(a => a.status === 'active').forEach(a => {
+      if (a.area_in_qatar) areas[a.area_in_qatar] = (areas[a.area_in_qatar]||0) + 1;
+    });
+    document.getElementById('agentAreaGrid').innerHTML = Object.entries(areas).map(([area, cnt]) => `
+      <div style="background:#0f172a;border:1px solid #334155;border-radius:8px;padding:12px 14px;">
+        <div style="color:#e2e8f0;font-weight:600;font-size:.88rem;">${esc(area)}</div>
+        <div style="color:#4ade80;font-size:.8rem;margin-top:4px;">${cnt} active agent${cnt>1?'s':''}</div>
+      </div>`).join('') || '<div style="color:#475569;">No active agents yet</div>';
+  }).catch(error => renderTableError('agentsBody', 8, error));
+}
+
+function openAgent(a) {
+  currentAgentId = a.id;
+  document.getElementById('modalAgentTitle').textContent = `Agent: ${a.name}`;
+  document.getElementById('modalAgentBody').innerHTML = `
+    <div class="info-grid-2">
+      <div class="field-group"><label>Full Name</label><div class="field-val">${esc(a.name)}</div></div>
+      <div class="field-group"><label>Status</label><div>${agentBadge(a.status)}</div></div>
+      <div class="field-group"><label>Email</label><div class="field-val">${esc(a.email||'—')}</div></div>
+      <div class="field-group"><label>Phone / WhatsApp</label><div class="field-val">${esc(a.phone||'—')}</div></div>
+      <div class="field-group"><label>Nationality</label><div class="field-val">${esc(a.nationality||'—')}</div></div>
+      <div class="field-group"><label>Location (City)</label><div class="field-val">${esc(a.location_city||'—')}</div></div>
+      <div class="field-group"><label>Location (Area)</label><div class="field-val">${esc(a.location_area||'—')}</div></div>
+      <div class="field-group"><label>Qatar Area to Cover</label><div class="field-val" style="color:#60a5fa;">${esc(a.area_in_qatar||'—')}</div></div>
+      <div class="field-group"><label>Languages</label><div class="field-val">${esc(a.spoken_languages||'—')}</div></div>
+      <div class="field-group"><label>Experience</label><div class="field-val">${esc(a.experience_years||'—')}</div></div>
+      <div class="field-group"><label>Current Occupation</label><div class="field-val">${esc(a.current_occupation||'—')}</div></div>
+      <div class="field-group"><label>Applied</label><div class="field-val">${fmtDate(a.created_at)}</div></div>
+    </div>
+    <div class="field-group"><label>Why Apply as Agent</label><div class="field-val">${esc(a.why_agent||'—')}</div></div>
+    ${a.admin_note ? `<div class="field-group"><label>Admin Note</label><div class="field-val" style="color:#fbbf24;">${esc(a.admin_note)}</div></div>` : ''}
+  `;
+  openModal('agentModal');
+}
+
+async function setAgentStatus(status) {
+  if (!currentAgentId) return;
+  const r = await apiFetch(`/admin/agents/${currentAgentId}/status`, {
+    method: 'PUT',
+    body: JSON.stringify({ status }),
+  });
+  if (r.ok) { toast(`Agent ${status}!`); closeModal('agentModal'); loadAgents(); }
+  else { toast('Error updating agent', 'error'); }
+}
+
+async function deleteAgent(id) {
+  if (!confirm('Delete this agent application permanently?')) return;
+  const r = await apiFetch(`/admin/agents/${id}`, { method: 'DELETE' });
+  if (r.ok) { toast('Agent deleted'); loadAgents(); } else toast('Could not delete agent', 'error');
+}
+
+// ── Jobs ─────────────────────────────────────────────────────────────────────
+function loadJobs() {
+  document.getElementById('jobsBody').innerHTML = '<tr><td colspan="8" class="loading"><i class="fas fa-spinner"></i></td></tr>';
+  apiFetch('/admin/jobs').then(apiJson).then(data => {
+    const jobs = data.jobs || [];
+    if (!jobs.length) { document.getElementById('jobsBody').innerHTML = '<tr><td colspan="8" class="empty-state"><i class="fas fa-briefcase"></i> No jobs posted yet</td></tr>'; return; }
+    document.getElementById('jobsBody').innerHTML = jobs.map(j => `
+      <tr>
+        <td>${esc(j.job_title)}</td>
+        <td>${esc(j.company_name)}</td>
+        <td>${esc(j.category||'—')}</td>
+        <td>${esc(j.location||'—')}</td>
+        <td style="text-align:center;">${j.positions_available}</td>
+        <td><span class="badge ${j.active ? 'badge-active' : 'badge-pending'}">${j.active ? 'Active' : 'Pending'}</span></td>
+        <td style="color:#64748b;font-size:.82rem;">${fmtDate(j.created_at)}</td>
+        <td>
+          <button class="btn-action ${j.active ? 'btn-reject' : 'btn-approve'}" onclick="toggleJob('${j.id}', ${!j.active})">
+            ${j.active ? '<i class="fas fa-eye-slash"></i> Deactivate' : '<i class="fas fa-check"></i> Activate'}
+          </button>
+           <button class="btn-action btn-reject" onclick="deleteJob('${j.id}')"><i class="fas fa-trash"></i> Delete</button>
+        </td>
+      </tr>`).join('');
+  }).catch(error => renderTableError('jobsBody', 8, error));
+}
+
+async function toggleJob(id, active) {
+  const r = await apiFetch(`/admin/jobs/${id}/activate`, { method: 'PUT', body: JSON.stringify({ active }) });
+  if (r.ok) { toast(active ? 'Job activated!' : 'Job deactivated'); loadJobs(); }
+  else { toast('Error', 'error'); }
+}
+
+async function deleteJob(id) {
+  if (!confirm('Delete this job permanently?')) return;
+  const r = await apiFetch(`/admin/jobs/${id}`, { method: 'DELETE' });
+  if (r.ok) { toast('Job deleted'); loadJobs(); } else toast('Could not delete job', 'error');
+}
+
+// ── Employers ─────────────────────────────────────────────────────────────────
+function loadEmployers() {
+  document.getElementById('employersBody').innerHTML = '<tr><td colspan="7" class="loading"><i class="fas fa-spinner"></i></td></tr>';
+  apiFetch('/admin/employers').then(apiJson).then(data => {
+    const employers = data.employers || [];
+    document.getElementById('employerBadge').textContent = employers.filter(e => e.status === 'pending').length;
+    if (!employers.length) {
+      document.getElementById('employersBody').innerHTML = '<tr><td colspan="7" class="empty-state"><i class="fas fa-building"></i> No employer profiles yet</td></tr>';
+      return;
+    }
+    document.getElementById('employersBody').innerHTML = employers.map(e => {
+      const status = e.status || 'pending';
+      const badge = status === 'approved' ? 'badge-approved' : status === 'rejected' || status === 'suspended' ? 'badge-rejected' : 'badge-pending';
+      return `<tr>
+        <td><strong>${esc(e.name)}</strong><div style="color:#64748b;font-size:.75rem;">${esc(e.job_title || 'Employer')}</div></td>
+        <td>${esc(e.company_name)}</td>
+        <td style="font-size:.8rem;"><div>${esc(e.email)}</div><div style="color:#64748b;">${esc(e.phone || '')}</div></td>
+        <td>${esc(e.location || '—')}</td>
+         <td><span class="badge ${badge}">${esc(status)}</span><div style="font-size:.7rem;color:${e.online?'#4ade80':'#94a3b8'};margin-top:4px;"><i class="fas fa-circle"></i> ${e.online ? 'Online' : 'Offline'}${e.typing ? ' · Typing…' : ''}</div><div style="font-size:.68rem;color:#64748b;">Last seen ${fmtDate(e.last_seen_at)}</div></td>
+        <td style="color:#64748b;font-size:.82rem;">${fmtDate(e.updated_at)}</td>
+        <td style="white-space:nowrap;">
+          ${status !== 'approved' ? `<button class="btn-action btn-approve" onclick="setEmployerStatus('${e.id}','approved')"><i class="fas fa-check"></i> Approve</button>` : ''}
+           <button class="btn-action btn-view" onclick="openEmployer(${JSON.stringify(e).replace(/"/g,'&quot;')})"><i class="fas fa-id-card"></i> Details</button>
+           ${status !== 'rejected' ? `<button class="btn-action btn-reject" onclick="setEmployerStatus('${e.id}','${status === 'approved' ? 'suspended' : 'rejected'}')"><i class="fas fa-${status === 'approved' ? 'pause' : 'times'}"></i> ${status === 'approved' ? 'Suspend' : 'Reject'}</button>` : ''}
+           <button class="btn-action btn-reject" onclick="deleteEmployer('${e.id}')"><i class="fas fa-trash"></i> Delete</button>
+        </td>
+      </tr>`;
+    }).join('');
+  }).catch(error => renderTableError('employersBody', 7, error));
+}
+
+async function setEmployerStatus(id, status) {
+  const label = status === 'approved' ? 'approve' : status === 'suspended' ? 'suspend' : 'reject';
+  if (!confirm(`Are you sure you want to ${label} this employer?`)) return;
+  const r = await apiFetch(`/admin/employers/${id}/status`, { method: 'PUT', body: JSON.stringify({ status }) });
+  if (r.ok) { toast(`Employer ${status}`); loadEmployers(); }
+  else toast('Could not update employer', 'error');
+}
+
+function openEmployer(e) {
+  document.getElementById('modalEmployerTitle').textContent = `Employer: ${e.company_name || e.name || 'Profile'}`;
+  const fields = [
+    ['Name', e.name], ['Company', e.company_name], ['Email', e.email], ['Phone', e.phone],
+    ['Job title', e.job_title], ['Location', e.location], ['Website', e.website],
+    ['Status', e.status], ['PIN configured', e.pin_set ? 'Yes (PIN hidden)' : 'No'],
+    ['Presence', e.online ? 'Online' : 'Offline'], ['Typing', e.typing ? 'Yes' : 'No'],
+    ['Last seen', e.last_seen_at ? new Date(e.last_seen_at).toLocaleString('en-GB') : '—'],
+    ['About', e.about],
+  ];
+  document.getElementById('modalEmployerBody').innerHTML = `<div class="info-grid-2">${fields.map(([label,value]) => `<div class="field-group"><label>${esc(label)}</label><div class="field-val">${esc(value || '—')}</div></div>`).join('')}</div>`;
+  openModal('employerModal');
+}
+
+async function deleteEmployer(id) {
+  if (!confirm('Delete this employer profile permanently? Related applications are not deleted automatically.')) return;
+  const r = await apiFetch(`/admin/employers/${id}`, { method: 'DELETE' });
+  if (r.ok) { toast('Employer deleted'); loadEmployers(); } else toast('Could not delete employer', 'error');
+}
+
+// ── Bot questions ─────────────────────────────────────────────────────────────
+function resetFaqForm() {
+  currentFaqKey = '';
+  document.getElementById('faqKey').value = '';
+  document.getElementById('faqKeyInput').value = '';
+  document.getElementById('faqQuestion').value = '';
+  document.getElementById('faqAnswer').value = '';
+  document.getElementById('faqOrder').value = 100;
+  document.getElementById('faqFeatured').checked = false;
+  document.getElementById('faqActive').checked = true;
+}
+
+function loadFaqs() {
+  document.getElementById('faqsBody').innerHTML = '<tr><td colspan="6" class="loading"><i class="fas fa-spinner"></i></td></tr>';
+  apiFetch('/admin/faqs').then(apiJson).then(data => {
+    const faqs = data.faqs || [];
+    if (!faqs.length) {
+      document.getElementById('faqsBody').innerHTML = '<tr><td colspan="6" class="empty-state"><i class="fas fa-robot"></i> No bot questions configured</td></tr>';
+      return;
+    }
+    document.getElementById('faqsBody').innerHTML = faqs.map(f => `<tr>
+      <td><strong>${esc(f.question)}</strong><div style="color:#64748b;font-size:.72rem;">${esc(f.faq_key)}</div></td>
+      <td class="truncate" title="${esc(f.answer)}">${esc(f.answer)}</td>
+      <td>${f.featured ? '<span class="badge badge-approved">Yes</span>' : '—'}</td>
+      <td>${f.active ? '<span class="badge badge-active">Yes</span>' : '<span class="badge badge-rejected">No</span>'}</td>
+      <td>${Number(f.sort_order || 0)}</td>
+      <td style="white-space:nowrap;"><button class="btn-action btn-view" onclick="editFaq(${JSON.stringify(f).replace(/"/g,'&quot;')})"><i class="fas fa-edit"></i> Edit</button> <button class="btn-action btn-reject" onclick="deleteFaq('${esc(f.faq_key)}')"><i class="fas fa-trash"></i></button></td>
+    </tr>`).join('');
+  }).catch(error => renderTableError('faqsBody', 6, error));
+}
+
+function editFaq(faq) {
+  currentFaqKey = faq.faq_key;
+  document.getElementById('faqKey').value = faq.faq_key || '';
+  document.getElementById('faqKeyInput').value = faq.faq_key || '';
+  document.getElementById('faqKeyInput').disabled = true;
+  document.getElementById('faqQuestion').value = faq.question || '';
+  document.getElementById('faqAnswer').value = faq.answer || '';
+  document.getElementById('faqOrder').value = faq.sort_order || 100;
+  document.getElementById('faqFeatured').checked = !!faq.featured;
+  document.getElementById('faqActive').checked = faq.active !== false;
+}
+
+async function saveFaq() {
+  const key = document.getElementById('faqKeyInput').value.trim().toLowerCase().replace(/[^a-z0-9_-]/g, '-');
+  const body = {
+    faqKey: key,
+    question: document.getElementById('faqQuestion').value.trim(),
+    answer: document.getElementById('faqAnswer').value.trim(),
+    sortOrder: Number(document.getElementById('faqOrder').value || 100),
+    featured: document.getElementById('faqFeatured').checked,
+    active: document.getElementById('faqActive').checked,
+  };
+  if (!key || !body.question || !body.answer) return toast('Question key, question, and answer are required', 'error');
+  const path = currentFaqKey ? `/admin/faqs/${encodeURIComponent(currentFaqKey)}` : '/admin/faqs';
+  const r = await apiFetch(path, { method: currentFaqKey ? 'PUT' : 'POST', body: JSON.stringify(body) });
+  if (r.ok) { toast('Bot question saved'); resetFaqForm(); document.getElementById('faqKeyInput').disabled = false; loadFaqs(); }
+  else toast('Could not save bot question', 'error');
+}
+
+async function deleteFaq(key) {
+  if (!confirm('Remove this bot question from the applicant dashboard?')) return;
+  const r = await apiFetch(`/admin/faqs/${encodeURIComponent(key)}`, { method: 'DELETE' });
+  if (r.ok) { toast('Bot question removed'); loadFaqs(); }
+  else toast('Could not remove bot question', 'error');
+}
+
+// ── Automated messages ───────────────────────────────────────────────────────
+let currentMessageKey = '';
+
+function resetMessageForm() {
+  currentMessageKey = '';
+  document.getElementById('messageKey').value = '';
+  document.getElementById('messageKeyInput').value = '';
+  document.getElementById('messageKeyInput').disabled = false;
+  document.getElementById('messageCategory').value = 'helper';
+  document.getElementById('messageLabel').value = '';
+  document.getElementById('messageOrder').value = 100;
+  document.getElementById('messageBody').value = '';
+  document.getElementById('messageActive').checked = true;
+}
+
+function loadAutomatedMessages() {
+  document.getElementById('messagesBody').innerHTML = '<tr><td colspan="7" class="loading"><i class="fas fa-spinner"></i></td></tr>';
+  apiFetch('/admin/automated-messages').then(apiJson).then(data => {
+    const messages = data.messages || [];
+    if (!messages.length) {
+      document.getElementById('messagesBody').innerHTML = '<tr><td colspan="7" class="empty-state"><i class="fas fa-comment-dots"></i> No automated messages configured</td></tr>';
+      return;
+    }
+    document.getElementById('messagesBody').innerHTML = messages.map(message => `<tr>
+      <td><strong>${esc(message.label)}</strong></td>
+      <td><code>${esc(message.message_key)}</code></td>
+      <td>${esc(message.category)}</td>
+      <td class="truncate" title="${esc(message.body)}">${esc(message.body)}</td>
+      <td>${message.active ? '<span class="badge badge-active">Yes</span>' : '<span class="badge badge-rejected">No</span>'}</td>
+      <td>${Number(message.sort_order || 0)}</td>
+      <td style="white-space:nowrap;"><button class="btn-action btn-view" onclick="editAutomatedMessage(${JSON.stringify(message).replace(/"/g,'&quot;')})"><i class="fas fa-edit"></i> Edit</button> <button class="btn-action btn-reject" onclick="deleteAutomatedMessage('${esc(message.message_key)}', this)"><i class="fas fa-trash"></i></button></td>
+    </tr>`).join('');
+  }).catch(error => renderTableError('messagesBody', 7, error));
+}
+
+function editAutomatedMessage(message) {
+  currentMessageKey = message.message_key || '';
+  document.getElementById('messageKey').value = currentMessageKey;
+  document.getElementById('messageKeyInput').value = currentMessageKey;
+  document.getElementById('messageKeyInput').disabled = true;
+  document.getElementById('messageCategory').value = message.category || 'helper';
+  document.getElementById('messageLabel').value = message.label || '';
+  document.getElementById('messageOrder').value = message.sort_order || 100;
+  document.getElementById('messageBody').value = message.body || '';
+  document.getElementById('messageActive').checked = message.active !== false;
+}
+
+async function saveAutomatedMessage(button) {
+  const key = document.getElementById('messageKeyInput').value.trim().toLowerCase().replace(/[^a-z0-9_-]/g, '-');
+  const body = {
+    messageKey: key,
+    category: document.getElementById('messageCategory').value,
+    label: document.getElementById('messageLabel').value.trim(),
+    body: document.getElementById('messageBody').value.trim(),
+    sortOrder: Number(document.getElementById('messageOrder').value || 100),
+    active: document.getElementById('messageActive').checked,
+  };
+  if (!key || !body.label || !body.body) return toast('Message key, label, and message text are required', 'error');
+  const path = currentMessageKey ? `/admin/automated-messages/${encodeURIComponent(currentMessageKey)}` : '/admin/automated-messages';
+  const restore = setAdminBusy(button || document.querySelector('#sec-automated-messages .btn-save'), 'Saving message');
+  try {
+    const response = await apiFetch(path, { method: currentMessageKey ? 'PUT' : 'POST', body: JSON.stringify(body) });
+    if (response.ok) {
+      toast('Automated message saved');
+      resetMessageForm();
+      loadAutomatedMessages();
+    } else {
+      toast('Could not save automated message', 'error');
+    }
+  } finally {
+    restore();
+  }
+}
+
+async function deleteAutomatedMessage(key, button) {
+  if (!confirm('Delete this automated message? Existing chat messages will not be removed.')) return;
+  const restore = setAdminBusy(button, 'Deleting');
+  try {
+    const response = await apiFetch(`/admin/automated-messages/${encodeURIComponent(key)}`, { method: 'DELETE' });
+    if (response.ok) { toast('Automated message removed'); loadAutomatedMessages(); }
+    else toast('Could not remove automated message', 'error');
+  } finally {
+    restore();
+  }
+}
+
+// ── Modals ───────────────────────────────────────────────────────────────────
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+function esc(str) {
+  return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function fmtDate(d) {
+  if (!d) return '—';
+  return new Date(d).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' });
+}
+function fmtStatus(s) {
+  const map = {
+    submitted:'Submitted', documents_review:'Documents Review', employer_review:'Employer Review',
+    interview_scheduled:'Interview Scheduled', job_offer:'Job Offer', visa_processing:'Visa Processing',
+    visa_approved:'Visa Approved', flight_prep:'Flight Prep', arrived:'Arrived in Qatar',
+     employed:'Employed', cancelled:'Cancelled', rejected:'Rejected',
+  };
+  return map[s] || s;
+}
+function badgeFor(s) { return `<span class="badge badge-${s||'submitted'}">${fmtStatus(s)}</span>`; }
+function agentBadge(s) {
+  const cls = { pending:'badge-pending', approved:'badge-approved', active:'badge-active', rejected:'badge-rejected' };
+  return `<span class="badge ${cls[s]||'badge-pending'}">${s}</span>`;
+}
+function statusToStep(s) {
+   const steps = { submitted:1, documents_review:2, employer_review:3, interview_scheduled:4, job_offer:5, visa_processing:6, visa_approved:7, flight_prep:8, arrived:9, employed:10, cancelled:0, rejected:0 };
+  return steps[s] || 1;
+}
+
+window.addEventListener('DOMContentLoaded', function() {
+  if (adminSession && adminSessionExpires > Date.now()) {
+    document.getElementById('loginOverlay').style.display = 'none';
+    document.getElementById('app').style.display = 'flex';
+    loadDashboard();
+    loadApplications();
+  } else if (adminSession) {
+    logout();
+  }
+});
+</script>
+</body>
+</html>
